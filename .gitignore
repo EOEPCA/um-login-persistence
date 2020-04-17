@@ -60,3 +60,11 @@ env/
 
 # VSCode
 .vscode
+
+# mypy
+.mypy_cache/
+run.sh
+vault_role_id.txt
+vault_secret_id.txt
+/tmp
+templates/ldif/98-radius.ldif
