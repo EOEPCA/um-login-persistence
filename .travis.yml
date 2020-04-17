@@ -25,9 +25,6 @@ jobs:
       install: skip
       script: travis/release.sh um-service-template
 
-import:
-  - docs/.travis.yml
-
 #notifications:
 #  slack: eoepca:Msk9hjQKAbwSYcVWiepenPim
 #  email:
