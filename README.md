@@ -21,14 +21,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/EOEPCA/um-login-persistence">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
   <h3 align="center">um-login-persistence</h3>
 
   <p align="center">
-    Template for developing an EOEPCA Service
+    EOEPCA Persistence system for the Login Service Building Block
     <br />
     <a href="https://github.com/EOEPCA/um-login-persistence"><strong>Explore the docs »</strong></a>
     <br />
