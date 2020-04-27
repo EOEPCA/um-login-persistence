@@ -3,6 +3,9 @@ env:
 services:
   - docker
 
+language: python
+python: 3.6.9
+
 jobs:
   include:
     - stage: container creation and publishing
@@ -10,7 +13,7 @@ jobs:
       script: travis/containerCreation.sh um-login-persistence
 
     - stage: smoke and acceptance test
-      install: pip3 install -r requirements.txt
+      install: pip install -r requirements.txt
       script: python3 travis/acceptanceTest.sh # Validation of the LDIF data to be inserted
 
     - stage: release
