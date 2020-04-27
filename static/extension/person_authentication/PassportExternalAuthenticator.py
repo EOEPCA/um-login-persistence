@@ -103,24 +103,25 @@ class PersonAuthentication(PersonAuthenticationType):
 
             #See passportlogin.xhtml
             provider = ServerUtil.getFirstValue(requestParameters, "loginForm:provider")
-            if StringHelper.isEmpty(provider):
+            #Direct authentication is not supported under EOEPCA
+            #if StringHelper.isEmpty(provider):
 
                 #it's username + passw auth
-                print "Passport. authenticate for step 1. Basic authentication detected"
-                logged_in = False
+            #    print "Passport. authenticate for step 1. Basic authentication detected"
+            #    logged_in = False
 
-                credentials = identity.getCredentials()
-                user_name = credentials.getUsername()
-                user_password = credentials.getPassword()
+            #    credentials = identity.getCredentials()
+            #    user_name = credentials.getUsername()
+            #    user_password = credentials.getPassword()
 
-                if StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password):
-                    authenticationService = CdiUtil.bean(AuthenticationService)
-                    logged_in = authenticationService.authenticate(user_name, user_password)
+            #    if StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password):
+            #        authenticationService = CdiUtil.bean(AuthenticationService)
+            #        logged_in = authenticationService.authenticate(user_name, user_password)
 
-                print "Passport. authenticate for step 1. Basic authentication returned: %s" % logged_in
-                return logged_in
+            #    print "Passport. authenticate for step 1. Basic authentication returned: %s" % logged_in
+            #    return logged_in
 
-            elif provider in self.registeredProviders:
+            if provider in self.registeredProviders:
                 #it's a recognized external IDP
                 identity.setWorkingParameter("selectedProvider", provider)
                 print "Passport. authenticate for step 1. Retrying step 1"
