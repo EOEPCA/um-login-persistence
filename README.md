@@ -21,14 +21,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/EOEPCA/um-login-persistence">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
   <h3 align="center">um-login-persistence</h3>
 
   <p align="center">
-    Template for developing an EOEPCA Service
+    EOEPCA Persistence system for the Login Service Building Block
     <br />
     <a href="https://github.com/EOEPCA/um-login-persistence"><strong>Explore the docs »</strong></a>
     <br />
@@ -159,46 +156,9 @@ The following environment variables are supported by the container:
 
 ## Initializing Data
 
-### LDAP
+kubectl run  --image=eoepca/um-login-persistence:latest persistence --env="GLUU_CONFIG_ADAPTER=kubernetes"     --env="GLUU_SECRET_ADAPTER=kubernetes"     --env="GLUU_OXTRUST_CONFIG_GENERATION=false"     --env="GLUU_LDAP_URL=opendj:1636"     --env="GLUU_PASSPORT_ENABLED=true" --env="GLUU_PERSISTENCE_TYPE=ldap"
 
-Deploy Wren:DS container:
-
-```sh
-docker run -d \
-    --network container:consul \
-    --name ldap \
-    -e GLUU_CONFIG_ADAPTER=consul \
-    -e GLUU_CONFIG_CONSUL_HOST=consul \
-    -e GLUU_SECRET_ADAPTER=vault \
-    -e GLUU_SECRET_VAULT_HOST=vault \
-    -v /path/to/opendj/config:/opt/opendj/config \
-    -v /path/to/opendj/db:/opt/opendj/db \
-    -v /path/to/opendj/logs:/opt/opendj/logs \
-    -v /path/to/opendj/ldif:/opt/opendj/ldif \
-    -v /path/to/opendj/backup:/opt/opendj/bak \
-    -v /path/to/vault_role_id.txt:/etc/certs/vault_role_id \
-    -v /path/to/vault_secret_id.txt:/etc/certs/vault_secret_id \
-    gluufederation/wrends:4.1.1_01
-```
-
-Run the following command to initialize data and save it to LDAP:
-
-```sh
-docker run --rm \
-    --network container:consul \
-    --name persistence \
-    -e GLUU_CONFIG_ADAPTER=consul \
-    -e GLUU_CONFIG_CONSUL_HOST=consul \
-    -e GLUU_SECRET_ADAPTER=vault \
-    -e GLUU_SECRET_VAULT_HOST=vault \
-    -e GLUU_PERSISTENCE_TYPE=ldap \
-    -e GLUU_LDAP_URL=ldap:1636 \
-    -v /path/to/vault_role_id.txt:/etc/certs/vault_role_id \
-    -v /path/to/vault_secret_id.txt:/etc/certs/vault_secret_id \
-    gluufederation/persistence:4.1.1_02
-```
-
-The process may take awhile, check the output of the `persistence` container log.
+The process may take a while, check the output of the `persistence` container log.
 
 ## Roadmap
 
