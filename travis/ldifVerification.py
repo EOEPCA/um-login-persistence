@@ -36,8 +36,9 @@ def import_ldif():
         except:
             traceback.print_exc()
             print(file_," validation failed")
-            exitCode = 1
+            exitCode = -1
         print("--------------------")
     return exitCode
 
-import_ldif()
+returnCode = import_ldif()
+sys.exit(returnCode)
