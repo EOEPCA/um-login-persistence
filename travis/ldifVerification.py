@@ -1,5 +1,6 @@
 from ldif3 import LDIFParser
 from os import sys
+import traceback
 
 def import_ldif():
     ldif_mappings = {
@@ -28,11 +29,12 @@ def import_ldif():
     exitCode = 0
     for file_ in ldif_mappings["default"]:
         print("Checking {} file...".format(file_))
-        src = "../templates/ldif/{}".format(file_)
+        src = "./templates/ldif/{}".format(file_)
         try:
             parser = LDIFParser(open(src))
             print("Successfully tested",file_)
         except:
+            traceback.print_exc()
             print(file_," validation failed")
             exitCode = 1
         print("--------------------")
