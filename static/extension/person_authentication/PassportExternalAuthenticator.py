@@ -24,7 +24,8 @@ from java.util import ArrayList, Arrays, Collections
 
 from javax.faces.application import FacesMessage
 from javax.faces.context import FacesContext
-
+from smtp_email import SMTPEmail
+smtp_client=SMTPEmail()
 import json
 import sys
 import datetime
@@ -138,6 +139,18 @@ class PersonAuthentication(PersonAuthenticationType):
                 # Completion of profile takes place
                 user_profile = json.loads(jsonp)
                 user_profile["mail"] = [ mail ]
+                smtp_client.setEmail(mail)
+                #Here to send confirmation, when recived continue
+                externalContext = CdiUtil.bean(ExternalContext)
+                contextPath = externalContext.getRequest().getContextPath()
+                hostName =  externalContext.getRequestServerName()
+                print "HostName from context : %s" % hostName
+                smtp_client.sendConfirmation()
+                # subject = "Registration confirmation"
+                # activationLink = "https://%s%s/confirm/registration.htm?code=%s" %(hostName, contextPath, self.guid)
+                # body = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome</h2><hr style='width:80%%;border: 1px solid #337ab7;'></hr><div style='text-align:center;'><p>Dear <span style='color: #337ab7;'>%s</span>,</p><p>Your Account has been created, welcome to <span style='color: #337ab7;'>%s</span>.</p><p>You are just one step way from activating your account on <span style='color: #337ab7;'>%s</span>.</p><p>Click the button and start using your account.</p></div><a class='btn' href='%s'><button style='background: #337ab7; color: white; margin-left: 30%%; border-radius: 5px; border: 0px; padding: 5px;' type='button'>Activate your account now!</button></a>"  % (user.getUid(), hostName, hostName, activationLink)
+                # print "User Confirm registration. Post method. Attempting to send e-mail to '%s' message '%s'" % (user.getMail(), body)
+                # mailService.sendMail(user.getMail(), None, subject, body, body);
 
                 return self.attemptAuthentication(identity, user_profile, jsonp)
 
