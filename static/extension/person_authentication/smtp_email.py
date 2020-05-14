@@ -124,20 +124,38 @@ class SMTPEmail():
     def set_email(self, email):
         self.email_to=email
 
-    def send_confirmation(self):
+    def send_confirmation(self, hostName, contextPath):
 
         confirm_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-        confirm_url = url_for('confirmation', token=confirm_serializer.dumps(self.email, salt='email-confirmation-salt'), _external=True)
-        html = render_template('activate.html',confirm_url=confirm_url)
-        subject = 'Delete Account Confirmation'
-        smtp_client.send_email(self.email, subject, html) # Here is to use the smtp client for sending the mail to the user
+        token =confirm_serializer.dumps(self.email, salt='email-confirmation-salt')
+        confirm_URL = "https://%s%s/confirm/registration.htm?code=%s" %(hostName, contextPath, token)
+        html = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome</h2><hr style='width:80%%;border: 1px solid #337ab7;'></hr><div style='text-align:center;'><p>Dear <span style='color: #337ab7;'></span>,</p><p>Your Account has been created, welcome to <span style='color: #337ab7;'>%s</span>.</p><p>You are just one step way from activating your account on <span style='color: #337ab7;'>%s</span>.</p><p>Click the button and start using your account.</p></div><a class='btn' href='%s'><button style='background: #337ab7; color: white; margin-left: 30%%; border-radius: 5px; border: 0px; padding: 5px;' type='button'>Activate your account now!</button></a>"  % (hostName, hostName, confirm_URL)
+        subject = 'Register Account Confirmation'
+        self.send_email(self.email, subject, html) # Here is to use the smtp client for sending the mail to the user
         print('A new confirmation email has been sent.', 'success')
 
-    def getConfirmation(self,token):
+    def getConfirmation(self, requestParameters):
         try:
+            print "User Confirm registration. Confirm method"
+            code_array = requestParameters.get("code")
+            if ArrayHelper.isEmpty(code_array):
+                print "User Confirm registration. Confirm method. code is empty"
+                return False
+
+            confirmation_code = code_array[0]
+            print "User Confirm registration. Confirm method. code: '%s'" % confirmation_code
+
+            if confirmation_code == None:
+                print "User Confirm registration. Confirm method. Confirmation code not exist in request"
+                return False
+
+
+
             confirm_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-            mail = confirm_serializer.loads(token, salt='email-confirmation-salt', max_age=3600)
-            return mail
+            mail = confirm_serializer.loads(confirmation_code, salt='email-confirmation-salt', max_age=3600)
+            if mail == self.mail:
+                return True
+            return False
         except:
             print('The confirmation link is invalid or has expired.', 'error')
             

@@ -145,13 +145,15 @@ class PersonAuthentication(PersonAuthenticationType):
                 contextPath = externalContext.getRequest().getContextPath()
                 hostName =  externalContext.getRequestServerName()
                 print "HostName from context : %s" % hostName
-                smtp_client.sendConfirmation()
+                smtp_client.sendConfirmation(hostName, contextPath)
+                #return True
                 # subject = "Registration confirmation"
                 # activationLink = "https://%s%s/confirm/registration.htm?code=%s" %(hostName, contextPath, self.guid)
                 # body = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome</h2><hr style='width:80%%;border: 1px solid #337ab7;'></hr><div style='text-align:center;'><p>Dear <span style='color: #337ab7;'>%s</span>,</p><p>Your Account has been created, welcome to <span style='color: #337ab7;'>%s</span>.</p><p>You are just one step way from activating your account on <span style='color: #337ab7;'>%s</span>.</p><p>Click the button and start using your account.</p></div><a class='btn' href='%s'><button style='background: #337ab7; color: white; margin-left: 30%%; border-radius: 5px; border: 0px; padding: 5px;' type='button'>Activate your account now!</button></a>"  % (user.getUid(), hostName, hostName, activationLink)
                 # print "User Confirm registration. Post method. Attempting to send e-mail to '%s' message '%s'" % (user.getMail(), body)
                 # mailService.sendMail(user.getMail(), None, subject, body, body);
-
+                print(smtp_client.getConfirmation(requestParameters))
+                print('---------------------------------------------------------')
                 return self.attemptAuthentication(identity, user_profile, jsonp)
 
             print "Passport. authenticate for step 2. Failed: expected mail value in HTTP request and json profile in session"
@@ -487,6 +489,7 @@ class PersonAuthentication(PersonAuthenticationType):
         uidKey = "uid"
         if not self.checkRequiredAttributes(user_profile, [uidKey, self.providerKey]):
             return False
+        if not self.checkConfirmation()
 
         provider = user_profile[self.providerKey]
         if not provider in self.registeredProviders:
@@ -498,7 +501,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
         userService = CdiUtil.bean(UserService)
         userByUid = userService.getUserByAttribute("oxExternalUid", externalUid)
-
+        print(smtp_client.getConfirmation())
         email = None
         if "mail" in user_profile:
             email = user_profile["mail"]
