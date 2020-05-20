@@ -8,7 +8,6 @@ from email.mime.multipart import MIMEMultipart
 # Libraries for file attached to email
 from email import encoders
 from email.mime.base import MIMEBase
-from itsdangerous import URLSafeTimedSerializer
 
 class SMTPEmail():
     def __init__(self):
@@ -25,8 +24,11 @@ class SMTPEmail():
         """
         self.email_to=''
         self.host = "smtp.gmail.com"
-        self.email_from = os.environ['EMAIL_ADRESS']
-        self.password = os.environ['EMAIL_PASSWORD']
+        print('2222222222222222222222222222222222222222222222222')
+        #self.email_from = os.environ['EMAIL_ADRESS']
+        #self.password = os.environ['EMAIL_PASSWORD']
+        self.email_from ="testmami46@gmail.com"
+        self.password="ogovnooorodzsjol"
         self.port = 465
         self.context = ssl.create_default_context()
     
@@ -95,10 +97,7 @@ class SMTPEmail():
                     
                     encoders.encode_base64(part)
 
-                    part.add_header(
-                        "Content-Disposition",
-                        f"attachment; filename= {file}",
-                    )
+                    part.add_header("Content-Disposition", "attachment; filename= " + file,)
 
                     message.attach(part)
 
@@ -126,37 +125,12 @@ class SMTPEmail():
 
     def send_confirmation(self, hostName, contextPath):
 
-        confirm_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-        token =confirm_serializer.dumps(self.email, salt='email-confirmation-salt')
-        confirm_URL = "https://%s%s/confirm/registration.htm?code=%s" %(hostName, contextPath, token)
-        html = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome</h2><hr style='width:80%%;border: 1px solid #337ab7;'></hr><div style='text-align:center;'><p>Dear <span style='color: #337ab7;'></span>,</p><p>Your Account has been created, welcome to <span style='color: #337ab7;'>%s</span>.</p><p>You are just one step way from activating your account on <span style='color: #337ab7;'>%s</span>.</p><p>Click the button and start using your account.</p></div><a class='btn' href='%s'><button style='background: #337ab7; color: white; margin-left: 30%%; border-radius: 5px; border: 0px; padding: 5px;' type='button'>Activate your account now!</button></a>"  % (hostName, hostName, confirm_URL)
+        #confirm_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        #confirm_serializer = '1'
+
+        #token =confirm_serializer.dumps(self.email, salt='email-confirmation-salt')
+        #confirm_URL = "https://%s%s/confirm/registration.htm?code=%s" %(hostName, contextPath, token)
+        html = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome</h2>" 
         subject = 'Register Account Confirmation'
         self.send_email(self.email, subject, html) # Here is to use the smtp client for sending the mail to the user
         print('A new confirmation email has been sent.', 'success')
-
-    def getConfirmation(self, requestParameters):
-        try:
-            print "User Confirm registration. Confirm method"
-            code_array = requestParameters.get("code")
-            if ArrayHelper.isEmpty(code_array):
-                print "User Confirm registration. Confirm method. code is empty"
-                return False
-
-            confirmation_code = code_array[0]
-            print "User Confirm registration. Confirm method. code: '%s'" % confirmation_code
-
-            if confirmation_code == None:
-                print "User Confirm registration. Confirm method. Confirmation code not exist in request"
-                return False
-
-
-
-            confirm_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-            mail = confirm_serializer.loads(confirmation_code, salt='email-confirmation-salt', max_age=3600)
-            if mail == self.mail:
-                return True
-            return False
-        except:
-            print('The confirmation link is invalid or has expired.', 'error')
-            
- 
