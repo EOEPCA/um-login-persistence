@@ -51,7 +51,6 @@ class UmaRptPolicy(UmaRptPolicyType):
             decoded = base64.b64decode(paddedPayload)
             userInum = json.loads(decoded)["sub"]
             tokenExp = int(json.loads(decoded)["exp"])
-            print tokenExp
             user = userService.getUserByInum(userInum)
             logged_in = authenticationService.authenticate(user.getUserId())
         except:
