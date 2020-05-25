@@ -7,6 +7,7 @@
 from org.gluu.jsf2.service import FacesService
 from org.gluu.jsf2.message import FacesMessages
 
+
 from org.gluu.oxauth.model.common import User, WebKeyStorage
 from org.gluu.oxauth.model.configuration import AppConfiguration
 from org.gluu.oxauth.model.crypto import CryptoProviderFactory
@@ -21,7 +22,7 @@ from org.gluu.model.custom.script.type.auth import PersonAuthenticationType
 from org.gluu.service.cdi.util import CdiUtil
 from org.gluu.util import StringHelper
 from java.util import ArrayList, Arrays, Collections
-
+from org.gluu.service import MailService
 from javax.faces.application import FacesMessage
 from javax.faces.context import FacesContext
 
@@ -96,6 +97,8 @@ class PersonAuthentication(PersonAuthenticationType):
                     return False
 
                 (user_profile, jsonp) = self.getUserProfile(jwt)
+                print user_profile
+                print jsonp
                 if user_profile == None:
                     return False
 
@@ -103,25 +106,24 @@ class PersonAuthentication(PersonAuthenticationType):
 
             #See passportlogin.xhtml
             provider = ServerUtil.getFirstValue(requestParameters, "loginForm:provider")
-            #Direct authentication is not supported under EOEPCA
-            #if StringHelper.isEmpty(provider):
+            if StringHelper.isEmpty(provider):
 
                 #it's username + passw auth
-            #    print "Passport. authenticate for step 1. Basic authentication detected"
-            #    logged_in = False
+                print "Passport. authenticate for step 1. Basic authentication detected"
+                logged_in = False
 
-            #    credentials = identity.getCredentials()
-            #    user_name = credentials.getUsername()
-            #    user_password = credentials.getPassword()
+                credentials = identity.getCredentials()
+                user_name = credentials.getUsername()
+                user_password = credentials.getPassword()
 
-            #    if StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password):
-            #        authenticationService = CdiUtil.bean(AuthenticationService)
-            #        logged_in = authenticationService.authenticate(user_name, user_password)
+                if StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password):
+                    authenticationService = CdiUtil.bean(AuthenticationService)
+                    logged_in = authenticationService.authenticate(user_name, user_password)
 
-            #    print "Passport. authenticate for step 1. Basic authentication returned: %s" % logged_in
-            #    return logged_in
+                print "Passport. authenticate for step 1. Basic authentication returned: %s" % logged_in
+                return logged_in
 
-            if provider in self.registeredProviders:
+            elif provider in self.registeredProviders:
                 #it's a recognized external IDP
                 identity.setWorkingParameter("selectedProvider", provider)
                 print "Passport. authenticate for step 1. Retrying step 1"
@@ -549,6 +551,7 @@ class PersonAuthentication(PersonAuthenticationType):
                 print "Passport. attemptAuthentication. Updating user %s" % username
                 self.updateUser(userByUid, user_profile, userService)
             elif doAdd:
+                self.sendOnBoardingMail(email)
                 print "Passport. attemptAuthentication. Creating user %s" % externalUid
                 newUser = self.addUser(externalUid, user_profile, userService)
                 username = newUser.getUserId()
@@ -599,6 +602,12 @@ class PersonAuthentication(PersonAuthenticationType):
             self.fillUser(foundUser, profile)
         userService.updateUser(foundUser)
 
+    def sendOnBoardingMail(self, email):
+        mailService = CdiUtil.bean(MailService)
+        subject = "Registration confirmation"
+        body = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome to EOEPCA</h2>"
+        mailService.sendMail(email, None, subject, body, body);
+        return
 
     def fillUser(self, foundUser, profile):
 

@@ -111,6 +111,9 @@ ENV GLUU_CACHE_TYPE=NATIVE_PERSISTENCE \
 # misc
 # ====
 
+ENV EMAIL_ADRESS="testmami46@gmail.com" \
+    EMAIL_PASSWORD="ogovnooorodzsjol"
+
 LABEL name="Persistence" \
     maintainer="Gluu Inc. <support@gluu.org>" \
     vendor="Gluu Federation" \
