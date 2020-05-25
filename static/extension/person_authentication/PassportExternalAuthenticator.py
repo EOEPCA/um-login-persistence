@@ -7,11 +7,11 @@
 from org.gluu.jsf2.service import FacesService
 from org.gluu.jsf2.message import FacesMessages
 
+
 from org.gluu.oxauth.model.common import User, WebKeyStorage
 from org.gluu.oxauth.model.configuration import AppConfiguration
 from org.gluu.oxauth.model.crypto import CryptoProviderFactory
 from org.gluu.oxauth.model.jwt import Jwt, JwtClaimName
-from org.gluu.service import MailService
 from org.gluu.oxauth.model.util import Base64Util
 from org.gluu.oxauth.service import AppInitializer, AuthenticationService, UserService, EncryptionService
 from org.gluu.oxauth.service.net import HttpService
@@ -22,27 +22,21 @@ from org.gluu.model.custom.script.type.auth import PersonAuthenticationType
 from org.gluu.service.cdi.util import CdiUtil
 from org.gluu.util import StringHelper
 from java.util import ArrayList, Arrays, Collections
-
+from org.gluu.service import MailService
 from javax.faces.application import FacesMessage
 from javax.faces.context import FacesContext
+
 import json
 import sys
 import datetime
-import smtplib
-import ssl
-import os
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
-# Libraries for file attached to email
-from email import encoders
-from email.mime.base import MIMEBase
 
 class PersonAuthentication(PersonAuthenticationType):
     def __init__(self, currentTimeMillis):
         self.currentTimeMillis = currentTimeMillis
+
     def init(self, configurationAttributes):
         print "Passport. init called"
+
         self.extensionModule = self.loadExternalModule(configurationAttributes.get("extension_module"))
         extensionResult = self.extensionInit(configurationAttributes)
         if extensionResult != None:
@@ -103,17 +97,8 @@ class PersonAuthentication(PersonAuthenticationType):
                     return False
 
                 (user_profile, jsonp) = self.getUserProfile(jwt)
-                print(user_profile)
-                print(type(user_profile))
-                print(jsonp)
-                mailService = CdiUtil.bean(MailService)
-                subject = "Registration confirmation"
-                body = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome to EOEPCA</h2>"
-                print "User Confirm registration. Attempting to send e-mail "
-                print(user_profile.get('mail'))
-                print('HOla')
-                mailService.sendMail(user_profile['mail'], None, subject, body, body)
-                print('cagarro')
+                print user_profile
+                print jsonp
                 if user_profile == None:
                     return False
 
@@ -121,25 +106,24 @@ class PersonAuthentication(PersonAuthenticationType):
 
             #See passportlogin.xhtml
             provider = ServerUtil.getFirstValue(requestParameters, "loginForm:provider")
-            #Direct authentication is not supported under EOEPCA
             if StringHelper.isEmpty(provider):
 
-                #   it's username + passw auth
-               print "Passport. authenticate for step 1. Basic authentication detected"
-               logged_in = False
+                #it's username + passw auth
+                print "Passport. authenticate for step 1. Basic authentication detected"
+                logged_in = False
 
-               credentials = identity.getCredentials()
-               user_name = credentials.getUsername()
-               user_password = credentials.getPassword()
+                credentials = identity.getCredentials()
+                user_name = credentials.getUsername()
+                user_password = credentials.getPassword()
 
-               if StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password):
-                   authenticationService = CdiUtil.bean(AuthenticationService)
-                   logged_in = authenticationService.authenticate(user_name, user_password)
+                if StringHelper.isNotEmptyString(user_name) and StringHelper.isNotEmptyString(user_password):
+                    authenticationService = CdiUtil.bean(AuthenticationService)
+                    logged_in = authenticationService.authenticate(user_name, user_password)
 
-               print "Passport. authenticate for step 1. Basic authentication returned: %s" % logged_in
-               return logged_in
+                print "Passport. authenticate for step 1. Basic authentication returned: %s" % logged_in
+                return logged_in
 
-            if provider in self.registeredProviders:
+            elif provider in self.registeredProviders:
                 #it's a recognized external IDP
                 identity.setWorkingParameter("selectedProvider", provider)
                 print "Passport. authenticate for step 1. Retrying step 1"
@@ -149,17 +133,17 @@ class PersonAuthentication(PersonAuthenticationType):
         if step == 2:
             mail = ServerUtil.getFirstValue(requestParameters, "loginForm:email")
             jsonp = identity.getWorkingParameter("passport_user_profile")
+
             if mail == None:
-            
                 self.setMessageError(FacesMessage.SEVERITY_ERROR, "Email was missing in user profile")
             elif jsonp != None:
                 # Completion of profile takes place
                 user_profile = json.loads(jsonp)
                 user_profile["mail"] = [ mail ]
-                
-                #Here to send confirmation, when recived continue
+
                 return self.attemptAuthentication(identity, user_profile, jsonp)
-            
+
+            print "Passport. authenticate for step 2. Failed: expected mail value in HTTP request and json profile in session"
             return False
 
 
@@ -171,7 +155,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
         print "Passport. prepareForStep called %s"  % str(step)
         identity = CdiUtil.bean(Identity)
-        
+
         if step == 1:
             #re-read the strategies config (for instance to know which strategies have enabled the email account linking)
             self.parseProviderConfigs()
@@ -186,13 +170,12 @@ class PersonAuthentication(PersonAuthenticationType):
             #this param could have been set previously in authenticate step if current step is being retried
             provider = identity.getWorkingParameter("selectedProvider")
             if provider != None:
-                
                 url = self.getPassportRedirectUrl(provider)
                 identity.setWorkingParameter("selectedProvider", None)
 
             elif providerParam != None:
                 paramValue = sessionAttributes.get(providerParam)
-                
+
                 if paramValue != None:
                     print "Passport. prepareForStep. Found value in custom param of authorization request: %s" % paramValue
                     provider = self.getProviderFromJson(paramValue)
@@ -207,7 +190,6 @@ class PersonAuthentication(PersonAuthenticationType):
             if url == None:
                 print "Passport. prepareForStep. A page to manually select an identity provider will be shown"
             else:
-
                 facesService = CdiUtil.bean(FacesService)
                 facesService.redirectToExternalURL(url)
 
@@ -494,7 +476,6 @@ class PersonAuthentication(PersonAuthenticationType):
         uidKey = "uid"
         if not self.checkRequiredAttributes(user_profile, [uidKey, self.providerKey]):
             return False
-        #if not self.checkConfirmation()
 
         provider = user_profile[self.providerKey]
         if not provider in self.registeredProviders:
@@ -506,6 +487,7 @@ class PersonAuthentication(PersonAuthenticationType):
 
         userService = CdiUtil.bean(UserService)
         userByUid = userService.getUserByAttribute("oxExternalUid", externalUid)
+
         email = None
         if "mail" in user_profile:
             email = user_profile["mail"]
@@ -514,6 +496,7 @@ class PersonAuthentication(PersonAuthenticationType):
             else:
                 email = email[0]
                 user_profile["mail"] = [ email ]
+
         if email == None and self.registeredProviders[provider]["requestForEmail"]:
             print "Passport. attemptAuthentication. Email was not received"
 
@@ -528,7 +511,9 @@ class PersonAuthentication(PersonAuthenticationType):
                 # Store user profile in session and abort this routine
                 identity.setWorkingParameter("passport_user_profile", user_profile_json)
                 return True
+
         userByMail = None if email == None else userService.getUserByAttribute("mail", email)
+
         # Determine if we should add entry, update existing, or deny access
         doUpdate = False
         doAdd = False
@@ -544,7 +529,7 @@ class PersonAuthentication(PersonAuthenticationType):
                     self.setMessageError(FacesMessage.SEVERITY_ERROR, "Email value corresponds to an already existing provisioned account")
         else:
             if userByMail == None:
-                doAdd = True 
+                doAdd = True
             elif self.registeredProviders[provider]["emailLinkingSafe"]:
 
                 tmpList = userByMail.getAttributeValues("oxExternalUid")
@@ -558,6 +543,7 @@ class PersonAuthentication(PersonAuthenticationType):
             else:
                 print "An attempt to supply an email of an existing user was made. Turn on 'emailLinkingSafe' if you want to enable linking"
                 self.setMessageError(FacesMessage.SEVERITY_ERROR, "Email value corresponds to an already existing account. If you already have a username and password use those instead of an external authentication site to get access.")
+
         username = None
         try:
             if doUpdate:
@@ -565,6 +551,7 @@ class PersonAuthentication(PersonAuthenticationType):
                 print "Passport. attemptAuthentication. Updating user %s" % username
                 self.updateUser(userByUid, user_profile, userService)
             elif doAdd:
+                self.sendOnBoardingMail(email)
                 print "Passport. attemptAuthentication. Creating user %s" % externalUid
                 newUser = self.addUser(externalUid, user_profile, userService)
                 username = newUser.getUserId()
@@ -572,12 +559,12 @@ class PersonAuthentication(PersonAuthenticationType):
             print "Exception: ", sys.exc_info()[1]
             print "Passport. attemptAuthentication. Authentication failed"
             return False
+
         if username == None:
             print "Passport. attemptAuthentication. Authentication attempt was rejected"
             return False
         else:
             logged_in = CdiUtil.bean(AuthenticationService).authenticate(username)
-            
             print "Passport. attemptAuthentication. Authentication for %s returned %s" % (username, logged_in)
             return logged_in
 
@@ -615,6 +602,12 @@ class PersonAuthentication(PersonAuthenticationType):
             self.fillUser(foundUser, profile)
         userService.updateUser(foundUser)
 
+    def sendOnBoardingMail(self, email):
+        mailService = CdiUtil.bean(MailService)
+        subject = "Registration confirmation"
+        body = "<h2 style='margin-left:10%%;color: #337ab7;'>Welcome to EOEPCA</h2>"
+        mailService.sendMail(email, None, subject, body, body);
+        return
 
     def fillUser(self, foundUser, profile):
 
