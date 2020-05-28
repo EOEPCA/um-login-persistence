@@ -145,4 +145,3 @@ oxUmaPolicyScriptDn: inum=5042.79AF,ou=scripts,o=gluu
 oxId: https://demoexample.gluu.org/oxauth/restv1/uma/scopes/authenticated
 oxScopeType: uma
 displayName: Authenticated
-entryUUID: 0a266812-2ad5-42a5-8b80-74db15282c68
