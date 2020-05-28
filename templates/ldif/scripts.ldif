@@ -577,8 +577,4 @@ oxScriptType: uma_rpt_policy
 oxRevision: 44
 oxLevel: 100
 displayName: scim_authenticated_policy
-createTimestamp: 20200519180752Z
-creatorsName: cn=Directory Manager,cn=Root DNs,cn=config
-modifyTimestamp: 20200522112757Z
-modifiersName: cn=Directory Manager,cn=Root DNs,cn=config
 entryUUID: 4662e0fb-5b40-4785-94d3-429be7ffe250

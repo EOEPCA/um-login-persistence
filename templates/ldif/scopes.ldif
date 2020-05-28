@@ -142,11 +142,7 @@ objectClass: top
 objectClass: oxAuthCustomScope
 inum: ee2e1703-3b7e-40be-8209-5b21838c9319
 oxUmaPolicyScriptDn: inum=5042.79AF,ou=scripts,o=gluu
-oxId: https://demoexample.gluu.org/oxauth/restv1/uma/scopes/scim_access
+oxId: https://demoexample.gluu.org/oxauth/restv1/uma/scopes/authenticated
 oxScopeType: uma
 displayName: Authenticated
-createTimestamp: 20200518081355Z
-creatorsName: cn=Directory Manager,cn=Root DNs,cn=config
-modifyTimestamp: 20200519182220Z
-modifiersName: cn=Directory Manager,cn=Root DNs,cn=config
 entryUUID: 0a266812-2ad5-42a5-8b80-74db15282c68
