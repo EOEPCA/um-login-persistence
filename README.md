@@ -47,7 +47,6 @@
   - [Installation](#installation)
 - [Usage](#usage)
 - [Initializing Data](#initializing-data)
-  - [LDAP](#ldap)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -193,14 +192,14 @@ Project Link: [https://github.com/EOEPCA/um-login-persistence](https://github.co
 - README.md is based on [this template](https://github.com/othneildrew/Best-README-Template) by [Othneil Drew](https://github.com/othneildrew).
 
 
-[contributors-shield]: https://img.shields.io/github/contributors/EOEPCA/um-login-persistencesvg?style=flat-square
+[contributors-shield]: https://img.shields.io/github/contributors/EOEPCA/um-login-persistence.svg?style=flat-square
 [contributors-url]: https://github.com/EOEPCA/um-login-persistence/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/EOEPCA/um-login-persistencesvg?style=flat-square
+[forks-shield]: https://img.shields.io/github/forks/EOEPCA/um-login-persistence.svg?style=flat-square
 [forks-url]: https://github.com/EOEPCA/um-login-persistence/network/members
-[stars-shield]: https://img.shields.io/github/stars/EOEPCA/um-login-persistencesvg?style=flat-square
+[stars-shield]: https://img.shields.io/github/stars/EOEPCA/um-login-persistence.svg?style=flat-square
 [stars-url]: https://github.com/EOEPCA/um-login-persistence/stargazers
-[issues-shield]: https://img.shields.io/github/issues/EOEPCA/um-login-persistencesvg?style=flat-square
+[issues-shield]: https://img.shields.io/github/issues/EOEPCA/um-login-persistence.svg?style=flat-square
 [issues-url]: https://github.com/EOEPCA/um-login-persistence/issues
-[license-shield]: https://img.shields.io/github/license/EOEPCA/um-login-persistencesvg?style=flat-square
+[license-shield]: https://img.shields.io/github/license/EOEPCA/um-login-persistence.svg?style=flat-square
 [license-url]: https://github.com/EOEPCA/um-login-persistence/blob/master/LICENSE
-[build-shield]: https://www.travis-ci.com/EOEPCA/um-login-persistencesvg?branch=master
+[build-shield]: https://www.travis-ci.com/EOEPCA/um-login-persistence.svg?branch=master
