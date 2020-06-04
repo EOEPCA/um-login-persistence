@@ -40,8 +40,8 @@
           "requestForEmail": false,
           "emailLinkingSafe": true,
           "options": {
-            "clientID": "59f1fed27153f631bc08",
-            "clientSecret": "640baffac0948454c48de2505726f53d11adc8a6"
+            "clientID": "",
+            "clientSecret": ""
           },
           "logo_img": "img/github.png"
         }
