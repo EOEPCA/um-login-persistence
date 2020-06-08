@@ -28,6 +28,23 @@
         ]
     },
 
-    "providers": []
+    "providers": [
+        {
+          "id": "github",
+          "displayName": "github",
+          "type": "oauth",
+          "mapping": "github",
+          "passportStrategyId": "passport-github2",
+          "enabled": true,
+          "callbackUrl": "https://demoexample.gluu.org/passport/auth/github/callback",
+          "requestForEmail": false,
+          "emailLinkingSafe": true,
+          "options": {
+            "clientID": "",
+            "clientSecret": ""
+          },
+          "logo_img": "img/github.png"
+        }
+      ]
 
 }

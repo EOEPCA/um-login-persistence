@@ -3,6 +3,9 @@ env:
 services:
   - docker
 
+language: python
+python: 3.6.9
+
 jobs:
   include:
     - stage: container creation and publishing
@@ -10,8 +13,8 @@ jobs:
       script: travis/containerCreation.sh um-login-persistence
 
     - stage: smoke and acceptance test
-      install: skip # without this there's a `git clone` executed!
-      script: travis/acceptanceTest.sh um-login-persistence 8080 7000 # Service name + external port + internal port for docker
+      install: pip install -r requirements.txt
+      script: travis/acceptanceTest.sh # Validation of the LDIF data to be inserted
 
     - stage: release
       if: branch = master AND NOT type IN (pull_request)
