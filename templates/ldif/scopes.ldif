@@ -40,7 +40,7 @@ objectClass: top
 objectClass: oxAuthCustomScope
 oxId: email
 inum: 764C
-defaultScope: false
+defaultScope: true
 description: View your email address.
 oxAuthClaim: inum=8F88,ou=attributes,o=gluu
 oxAuthClaim: inum=CAE3,ou=attributes,o=gluu
@@ -92,7 +92,7 @@ objectClass: oxAuthCustomScope
 oxId: user_name
 inum: 10B2
 description: View your local username in the Gluu Server.
-defaultScope: false
+defaultScope: true
 oxAuthClaim: inum=42E0,ou=attributes,o=gluu
 oxScopeType: openid
 
