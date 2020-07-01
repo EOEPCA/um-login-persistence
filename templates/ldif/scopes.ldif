@@ -142,6 +142,6 @@ objectClass: top
 objectClass: oxAuthCustomScope
 inum: ee2e1703-3b7e-40be-8209-5b21838c9319
 oxUmaPolicyScriptDn: inum=5042.79AF,ou=scripts,o=gluu
-oxId: https://demoexample.gluu.org/oxauth/restv1/uma/scopes/authenticated
+oxId: Authenticated
 oxScopeType: uma
 displayName: Authenticated
