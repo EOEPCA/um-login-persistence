@@ -52,3 +52,14 @@ oxAuthTrustedClient: true
 oxAuthSubjectType: public
 oxPersistClientAuthorizations: false
 oxAuthLogoutSessionRequired: true
+
+# Default Sector Identifier for testing purposes
+dn: oxId=9b473868-fa96-4fd1-a662-76e3663c9726,ou=sector_identifiers,o=gluu
+objectClass: top
+objectClass: oxSectorIdentifier
+description: TestSectorIdentifier
+oxId: 9b473868-fa96-4fd1-a662-76e3663c9726
+oxAuthRedirectURI: https://demoexample.gluu.org/login
+oxAuthRedirectURI: https://%(hostname)s/web_ui/oauth/callback
+oxAuthRedirectURI: http://%(hostname)s/web_ui/oauth/callback
+oxAuthRedirectURI: https://test.com/example
