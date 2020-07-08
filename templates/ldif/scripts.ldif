@@ -577,3 +577,17 @@ oxScriptType: uma_rpt_policy
 oxRevision: 44
 oxLevel: 100
 displayName: scim_authenticated_policy
+
+# open_policy script
+dn: inum=B1B9.DADB,ou=scripts,o=gluu
+objectClass: oxCustomScript     
+objectClass: top                                        
+oxModuleProperty: {"value1":"location_type","value2":"ldap","description":""}
+oxEnabled: true
+programmingLanguage: python
+oxScript:: ZnJvbSBvcmcuZ2x1dS5tb2RlbC5jdXN0b20uc2NyaXB0LnR5cGUudW1hIGltcG9ydCBVbWFScHRQb2xpY3lUeXBlCgpjbGFzcyBVbWFScHRQb2xpY3koVW1hUnB0UG9saWN5VHl
+inum: B1B9.DADB                
+oxScriptType: uma_rpt_policy
+oxRevision: 1                   
+oxLevel: 100                                              
+displayName: open_policy                       
