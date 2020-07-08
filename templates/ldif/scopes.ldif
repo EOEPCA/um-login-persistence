@@ -145,3 +145,16 @@ oxUmaPolicyScriptDn: inum=5042.79AF,ou=scripts,o=gluu
 oxId: Authenticated
 oxScopeType: uma
 displayName: Authenticated
+
+# Open Policy scope
+dn: inum=c7e910cb-671e-4e63-8616-be9a70a2ba99,ou=scopes,o=gluu
+objectClass: top               
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=B1B9.DADB,ou=scripts,o=gluu
+inum: c7e910cb-671e-4e63-8616-be9a70a2ba99              
+oxId: public_access
+oxScopeType: uma
+displayName: Public Access
+createTimestamp: 20200708143839Z
+creatorsName: cn=Directory Manager,cn=Root DNs,cn=config
+entryUUID: 13440b1c-c01a-4cdf-8806-3d9a689cadf0
