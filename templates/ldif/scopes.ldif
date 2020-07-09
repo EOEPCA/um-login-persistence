@@ -148,10 +148,10 @@ displayName: Authenticated
 
 # Open Policy scope
 dn: inum=c7e910cb-671e-4e63-8616-be9a70a2ba99,ou=scopes,o=gluu
-objectClass: top               
+objectClass: top
 objectClass: oxAuthCustomScope
 oxUmaPolicyScriptDn: inum=B1B9.DADB,ou=scripts,o=gluu
-inum: c7e910cb-671e-4e63-8616-be9a70a2ba99              
+inum: c7e910cb-671e-4e63-8616-be9a70a2ba99
 oxId: public_access
 oxScopeType: uma
 displayName: Public Access
