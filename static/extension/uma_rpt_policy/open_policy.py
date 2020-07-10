@@ -20,3 +20,9 @@ class UmaRptPolicy(UmaRptPolicyType):
     def authorize(self, context):
         print "Authorized successfully!"
         return True
+
+    def getRequiredClaims(self, context):
+        return []
+   
+    def getClaimsGatheringScriptName(self, context):
+        return "sampleClaimsGathering"
