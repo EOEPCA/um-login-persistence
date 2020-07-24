@@ -13,6 +13,7 @@ from java.util import Arrays, ArrayList, HashSet
 from java.lang import String
 from org.gluu.oxauth.service import AuthenticationService
 from org.gluu.oxauth.service import UserService
+from jinja2 import Template
 import base64
 import json
 import time
@@ -43,40 +44,51 @@ class UmaRptPolicy(UmaRptPolicyType):
     def authorize(self, context): # context is reference of org.gluu.oxauth.uma.authorization.UmaAuthorizationContext
         print "Protected Access Policy. Authorizing ..."
         
-        template = {"Request": { \
-                        "User": { \
-                            "Attribute": [ \
+        template = Template("{\"Request\": { \
+                        \"AccessSubject\": { \
+                            \"Attribute\": [ \
                                 { \
-                                    "AttributeId": "%HOSTNAME%/identity/user/user_name", \
-                                    "Value": "%USERNAME%", \
-                                    "DataType": "string", \
-                                    "IncludeInResult": True \
+                                    \"AttributeId\": \"user_id\", \
+                                    \"Value\": \"{{ USERNAME }}\", \
+                                    \"DataType\": \"string\", \
+                                    \"IncludeInResult\": True \
                                 }, \
                                 { \
-                                    "AttributeId": "claim_token", \
-                                    "Value": "%CLAIMTOKEN%", \
-                                    "DataType": "string", \
-                                    "IncludeInResult": True \
+                                    \"AttributeId\": \"claim_token\", \
+                                    \"Value\": \"{{ CLAIMTOKEN }}\", \
+                                    \"DataType\": \"string\", \
+                                    \"IncludeInResult\": True \
                                 } \
                             ] \
                         }, \
-                        "Resource": { \
-                            "Attribute": [ \
+                        \"Action\": [{ \
+                            \"Attribute\": [{ \
+                                \"AttributeId\": \"action-id\", \
+                                \"Value\": \"{{ ACTION }}\" \
+                            }] \
+                        }], \
+                        \"Resource\": [ \
+                        {% for resource in RESOURCES %} \
+                            {\"Attribute\": [ \
                                 { \
-                                    "AttributeId": "resource-id", \
-                                    "Value": "%RESOURCEID%", \
-                                    "DataType": "string", \
-                                    "IncludeInResult": True \
+                                    \"AttributeId\": \"resource-id\", \
+                                    \"Value\": \"{{ resource }}\", \
+                                    \"DataType\": \"string\", \
+                                    \"IncludeInResult\": True \
                                 } \
-                            ] \
-                        } \
+                            ]} \
+                        {% if not loop.last %},{% endif %} \
+                        {% endfor %} \
+                        ] \
                     } \
-                }
-                
-        hostname=""
+                }")
+        
+        #TODO get hostname + endpoint from global variables in persistence
+        PDPhostname=""
+        PDPendpoint=""
         username=""
         claimToken=""
-        resourceID=""
+        resourceIDList=""
         
         authenticationService = CdiUtil.bean(AuthenticationService)
         userService = CdiUtil.bean(UserService)
@@ -88,31 +100,66 @@ class UmaRptPolicy(UmaRptPolicyType):
             decoded = base64.b64decode(paddedPayload)
             userInum = json.loads(decoded)["sub"]
             username = userService.getUserByInum(userInum)
-            resourceID = context.getResourceIds()[0]
-            #TODO Get hostname
+            resourceIDList = context.getResourceIds()
         except:
             print "Protected Access Policy. No claim token passed!"
             return False
 
-        templateString=str(template)
-        filledTemplate=templateString.replace("%HOSTNAME%",hostname)
-        filledTemplate=filledTemplate.replace("%USERNAME%",username)
-        filledTemplate=filledTemplate.replace("%CLAIMTOKEN%",claimToken)
-        filledTemplate=filledTemplate.replace("%RESOURCEID%",resourceID) #This assumes only 1 resource. Probably needs an a specific template engine to implement multiple resources
-        
-        jsonForm=eval(filledTemplate)
+        #fill template
+        #TODO get action from incoming request?
+        jsonForm = eval(template.render(USERNAME = username, CLAIMTOKEN = claimToken, ACTION = "view", RESOURCES = resourceIDList))
 
-        #TODO Elaborate request to PDP and get True or False as reply
-        headers=""
-        payload="{'jsonForm': "+ jsonForm +"}"
-        resp = True
+        headers={'content-type': "application/json"}
+        resp = requests.get(PDPhostname+PDPendpoint, headers=headers, json=jsonForm)
+        #resp = True
         
-        if not resp:
-            print "Protected Access Policy. Access denied!"
-            return False
-        else:
+        if resp:
             print "Protected Access Policy. Access granted!"
-            return True
+        else:
+            print "Protected Access Policy. Access denied!"
+        return resp
 
     def getClaimsGatheringScriptName(self, context):
         return UmaConstants.NO_SCRIPT
+
+## BELOW IS SOLELY FOR DEBUGGING PURPOSES - TO BE DELETED
+# template = Template("{\"Request\": { \
+#                         \"AccessSubject\": { \
+#                             \"Attribute\": [ \
+#                                 { \
+#                                     \"AttributeId\": \"user_id\", \
+#                                     \"Value\": \"{{ USERNAME }}\", \
+#                                     \"DataType\": \"string\", \
+#                                     \"IncludeInResult\": True \
+#                                 }, \
+#                                 { \
+#                                     \"AttributeId\": \"claim_token\", \
+#                                     \"Value\": \"{{ CLAIMTOKEN }}\", \
+#                                     \"DataType\": \"string\", \
+#                                     \"IncludeInResult\": True \
+#                                 } \
+#                             ] \
+#                         }, \
+#                         \"Action\": [{ \
+#                             \"Attribute\": [{ \
+#                                 \"AttributeId\": \"action-id\", \
+#                                 \"Value\": \"{{ ACTION }}\" \
+#                             }] \
+#                         }], \
+#                         \"Resource\": [ \
+#                         {% for resource in RESOURCES %} \
+#                             {\"Attribute\": [ \
+#                                 { \
+#                                     \"AttributeId\": \"resource-id\", \
+#                                     \"Value\": \"{{ resource }}\", \
+#                                     \"DataType\": \"string\", \
+#                                     \"IncludeInResult\": True \
+#                                 } \
+#                             ]} \
+#                         {% if not loop.last %},{% endif %} \
+#                         {% endfor %} \
+#                         ] \
+#                     } \
+#                 }")
+# print(template.render(USERNAME = "Tiago", CLAIMTOKEN = "ABCD1234", ACTION = "view", RESOURCES = [1,2]))
+# print(eval(template.render(USERNAME = "Tiago", CLAIMTOKEN = "ABCD1234", ACTION = "view", RESOURCES = [1,2])))
