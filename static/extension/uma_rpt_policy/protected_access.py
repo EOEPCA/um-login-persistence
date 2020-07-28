@@ -26,6 +26,16 @@ class UmaRptPolicy(UmaRptPolicyType):
 
     def init(self, configurationAttributes):
         print "Protected Access Policy. Initializing ..."
+        if not configurationAttributes.containsKey("pdp_hostname"):
+            print "Protected Access Policy init error, pdp hostname not specified!"
+            return False
+        self.pdp_hostname = str(configurationAttributes.get("pdp_hostname").getValue2())
+
+        if not configurationAttributes.containsKey("pdp_endpoint"):
+            print "Protected Access Policy init error, pdp endpoint not specified!"
+            return False
+        self.pdp_endpoint = str(configurationAttributes.get("pdp_endpoint").getValue2())
+        print "Protected Access Policy. PDP endpoint set to: " + self.pdp_hostname + self.pdp_endpoint
         print "Protected Access Policy. Initialized successfully"
         return True
 
@@ -83,9 +93,6 @@ class UmaRptPolicy(UmaRptPolicyType):
                     } \
                 }")
         
-        #TODO get hostname + endpoint from global variables in persistence
-        PDPhostname=""
-        PDPendpoint=""
         username=""
         claimToken=""
         resourceIDList=""
@@ -110,56 +117,19 @@ class UmaRptPolicy(UmaRptPolicyType):
         jsonForm = eval(template.render(USERNAME = username, CLAIMTOKEN = claimToken, ACTION = "view", RESOURCES = resourceIDList))
 
         headers={'content-type': "application/json"}
-        resp = requests.get(PDPhostname+PDPendpoint, headers=headers, json=jsonForm)
-        #resp = True
-        
-        if resp:
-            print "Protected Access Policy. Access granted!"
-        else:
+        resp = requests.get(self.pdp_hostname+self.pdp_endpoint, headers=headers, json=jsonForm)
+        try:
+            pdpReply = resp.json()
+            decision = str(pdpReply["Response"][0]["Decision"])
+            if decision == "Permit":
+                print "Protected Access Policy. Access granted!"
+                return True
             print "Protected Access Policy. Access denied!"
-        return resp
+            return False
+        except Exception as e:
+            print "Protected Access Policy. Exception occured:"
+            print str(e)
+        return False
 
     def getClaimsGatheringScriptName(self, context):
         return UmaConstants.NO_SCRIPT
-
-## BELOW IS SOLELY FOR DEBUGGING PURPOSES - TO BE DELETED
-# template = Template("{\"Request\": { \
-#                         \"AccessSubject\": { \
-#                             \"Attribute\": [ \
-#                                 { \
-#                                     \"AttributeId\": \"user_id\", \
-#                                     \"Value\": \"{{ USERNAME }}\", \
-#                                     \"DataType\": \"string\", \
-#                                     \"IncludeInResult\": True \
-#                                 }, \
-#                                 { \
-#                                     \"AttributeId\": \"claim_token\", \
-#                                     \"Value\": \"{{ CLAIMTOKEN }}\", \
-#                                     \"DataType\": \"string\", \
-#                                     \"IncludeInResult\": True \
-#                                 } \
-#                             ] \
-#                         }, \
-#                         \"Action\": [{ \
-#                             \"Attribute\": [{ \
-#                                 \"AttributeId\": \"action-id\", \
-#                                 \"Value\": \"{{ ACTION }}\" \
-#                             }] \
-#                         }], \
-#                         \"Resource\": [ \
-#                         {% for resource in RESOURCES %} \
-#                             {\"Attribute\": [ \
-#                                 { \
-#                                     \"AttributeId\": \"resource-id\", \
-#                                     \"Value\": \"{{ resource }}\", \
-#                                     \"DataType\": \"string\", \
-#                                     \"IncludeInResult\": True \
-#                                 } \
-#                             ]} \
-#                         {% if not loop.last %},{% endif %} \
-#                         {% endfor %} \
-#                         ] \
-#                     } \
-#                 }")
-# print(template.render(USERNAME = "Tiago", CLAIMTOKEN = "ABCD1234", ACTION = "view", RESOURCES = [1,2]))
-# print(eval(template.render(USERNAME = "Tiago", CLAIMTOKEN = "ABCD1234", ACTION = "view", RESOURCES = [1,2])))
