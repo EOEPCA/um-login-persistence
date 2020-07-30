@@ -66,7 +66,7 @@ class UmaRptPolicy(UmaRptPolicyType):
             paddedPayload = payload + '=' * (4 - len(payload) % 4)
             decoded = base64.b64decode(paddedPayload)
             userInum = json.loads(decoded)["sub"]
-            username = userService.getUserByInum(userInum)
+            username = userService.getUserByInum(userInum).getUserId()
             resourceIDList = context.getResourceIds()
         except Exception as e:
             print "Protected Access Policy. No claim token passed!"
@@ -102,23 +102,29 @@ class UmaRptPolicy(UmaRptPolicyType):
         #Build request form in JSON format
         requestForm = {"Request": request}
 
-        headers={'content-type': "application/json"}
-        conn = httplib.HTTPConnection(self.pdp_hostname)
-        conn.request("GET", self.pdp_endpoint, body=requestForm, headers=headers)
-        resp = conn.getresponse().read()
-
+        #Make request to PDP
         try:
-            pdpReply = eval(resp)
-            decision = str(pdpReply["Response"][0]["Decision"])
-            if decision == "Permit":
-                print "Protected Access Policy. Access granted!"
-                return True
-            print "Protected Access Policy. Access denied!"
+            headers={'content-type': "application/json"}
+            conn = httplib.HTTPConnection(self.pdp_hostname)
+            conn.request("GET", self.pdp_endpoint, body=str(requestForm), headers=headers)
+            resp = conn.getresponse().read()
+
+            try:
+                pdpReply = eval(resp)
+                decision = str(pdpReply["Response"][0]["Decision"])
+                if decision == "Permit":
+                    print "Protected Access Policy. Access granted!"
+                    return True
+                print "Protected Access Policy. Access denied!"
+                return False
+            except Exception as e:
+                print "Protected Access Policy. Exception occured:"
+                print str(e)
             return False
         except Exception as e:
-            print "Protected Access Policy. Exception occured:"
+            print "Protected Access Policy. Failure to connect to PDP."
             print str(e)
-        return False
+            return False
 
     def getClaimsGatheringScriptName(self, context):
         return UmaConstants.NO_SCRIPT
