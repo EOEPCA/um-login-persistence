@@ -145,3 +145,13 @@ oxUmaPolicyScriptDn: inum=5042.79AF,ou=scripts,o=gluu
 oxId: Authenticated
 oxScopeType: uma
 displayName: Authenticated
+
+# Protected Access scope
+dn: inum=a7684d1b-0e32-4585-954a-13b708a0b5e1,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=4D35.5AE9,ou=scripts,o=gluu
+inum: a7684d1b-0e32-4585-954a-13b708a0b5e1
+oxId: protected_access
+oxScopeType: uma
+displayName: protected_access
