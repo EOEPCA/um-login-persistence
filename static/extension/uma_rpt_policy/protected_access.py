@@ -13,11 +13,10 @@ from java.util import Arrays, ArrayList, HashSet
 from java.lang import String
 from org.gluu.oxauth.service import AuthenticationService
 from org.gluu.oxauth.service import UserService
-from jinja2 import Template
 import base64
 import json
 import time
-import requests
+import httplib
 
 class UmaRptPolicy(UmaRptPolicyType):
 
@@ -54,45 +53,6 @@ class UmaRptPolicy(UmaRptPolicyType):
     def authorize(self, context): # context is reference of org.gluu.oxauth.uma.authorization.UmaAuthorizationContext
         print "Protected Access Policy. Authorizing ..."
         
-        template = Template("{\"Request\": { \
-                        \"AccessSubject\": { \
-                            \"Attribute\": [ \
-                                { \
-                                    \"AttributeId\": \"user_id\", \
-                                    \"Value\": \"{{ USERNAME }}\", \
-                                    \"DataType\": \"string\", \
-                                    \"IncludeInResult\": True \
-                                }, \
-                                { \
-                                    \"AttributeId\": \"claim_token\", \
-                                    \"Value\": \"{{ CLAIMTOKEN }}\", \
-                                    \"DataType\": \"string\", \
-                                    \"IncludeInResult\": True \
-                                } \
-                            ] \
-                        }, \
-                        \"Action\": [{ \
-                            \"Attribute\": [{ \
-                                \"AttributeId\": \"action-id\", \
-                                \"Value\": \"{{ ACTION }}\" \
-                            }] \
-                        }], \
-                        \"Resource\": [ \
-                        {% for resource in RESOURCES %} \
-                            {\"Attribute\": [ \
-                                { \
-                                    \"AttributeId\": \"resource-id\", \
-                                    \"Value\": \"{{ resource }}\", \
-                                    \"DataType\": \"string\", \
-                                    \"IncludeInResult\": True \
-                                } \
-                            ]} \
-                        {% if not loop.last %},{% endif %} \
-                        {% endfor %} \
-                        ] \
-                    } \
-                }")
-        
         username=""
         claimToken=""
         resourceIDList=""
@@ -108,18 +68,47 @@ class UmaRptPolicy(UmaRptPolicyType):
             userInum = json.loads(decoded)["sub"]
             username = userService.getUserByInum(userInum)
             resourceIDList = context.getResourceIds()
-        except:
+        except Exception as e:
             print "Protected Access Policy. No claim token passed!"
+            print str(e)
             return False
 
-        #fill template
-        #TODO get action from incoming request?
-        jsonForm = eval(template.render(USERNAME = username, CLAIMTOKEN = claimToken, ACTION = "view", RESOURCES = resourceIDList))
+        #fill request form
+        request = {}
+        #Add Access Subject with user_id and claim_token attributes
+        attribute_user_id = { "AttributeId": "user_id", "Value": str(username), "DataType": "string", "IncludeInResult": True }
+        attribute_claim_token = {"AttributeId": "claim_token", "Value": str(claimToken), "DataType": "string", "IncludeInResult": True}
+        access_subject_attributes = [attribute_user_id, attribute_claim_token]
+        accessSubject = {"Attribute": access_subject_attributes}
+        request.update({"AccessSubject": accessSubject})
+
+        #Add Action, the default is "view" but can easily be extended in the future
+        attribute_action_view = {"AttributeId": "action-id", "Value": "view"}
+        action_attribute_list = [attribute_action_view]
+        attribute_action = {"Attribute": action_attribute_list}
+        action_list = [attribute_action]
+        request.update({"Action": action_list})
+
+        #Add Resources as a list
+        #Each resource contains a list of attributes to characterize it
+        #Right now, resources are just characterized by their resource-id. Can be expanded in the future
+        resource_list = []
+        for resource in resourceIDList:
+            resource_attribute_id = {"AttributeId": "resource-id", "Value": str(resource), "DataType": "string", "IncludeInResult": True }
+            resource_attribute = {"Attribute": [resource_attribute_id]}
+            resource_list.append(resource_attribute)
+        request.update({"Resource": resource_list})
+
+        #Build request form in JSON format
+        requestForm = {"Request": request}
 
         headers={'content-type': "application/json"}
-        resp = requests.get(self.pdp_hostname+self.pdp_endpoint, headers=headers, json=jsonForm)
+        conn = httplib.HTTPConnection(self.pdp_hostname)
+        conn.request("GET", self.pdp_endpoint, body=requestForm, headers=headers)
+        resp = conn.getresponse().read()
+
         try:
-            pdpReply = resp.json()
+            pdpReply = eval(resp)
             decision = str(pdpReply["Response"][0]["Decision"])
             if decision == "Permit":
                 print "Protected Access Policy. Access granted!"
