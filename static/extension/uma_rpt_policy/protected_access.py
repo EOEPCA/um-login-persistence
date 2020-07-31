@@ -80,7 +80,8 @@ class UmaRptPolicy(UmaRptPolicyType):
         attribute_claim_token = {"AttributeId": "claim_token", "Value": str(claimToken), "DataType": "string", "IncludeInResult": True}
         access_subject_attributes = [attribute_user_id, attribute_claim_token]
         accessSubject = {"Attribute": access_subject_attributes}
-        request.update({"AccessSubject": accessSubject})
+        access_subject_list = [accessSubject]
+        request.update({"AccessSubject": access_subject_list})
 
         #Add Action, the default is "view" but can easily be extended in the future
         attribute_action_view = {"AttributeId": "action-id", "Value": "view"}
