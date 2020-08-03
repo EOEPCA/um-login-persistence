@@ -105,9 +105,9 @@ class UmaRptPolicy(UmaRptPolicyType):
 
         #Make request to PDP
         try:
-            headers={'content-type': "application/json"}
+            headers={'content-type': "application/json", "Accept": "text/plain"}
             conn = httplib.HTTPConnection(self.pdp_hostname)
-            conn.request("GET", self.pdp_endpoint, body=str(requestForm), headers=headers)
+            conn.request("GET", self.pdp_endpoint, body=json.dumps(requestForm), headers=headers)
             resp = conn.getresponse().read()
 
             try:
