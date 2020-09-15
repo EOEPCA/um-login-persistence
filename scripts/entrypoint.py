@@ -50,6 +50,9 @@ GLUU_SAML_ENABLED = os.environ.get("GLUU_SAML_ENABLED", False)
 GLUU_SCIM_ENABLED = os.environ.get("GLUU_SCIM_ENABLED", False)
 GLUU_SCIM_TEST_MODE = os.environ.get("GLUU_SCIM_TEST_MODE", False)
 
+LP_CLIENT_ID = os.environ.get("LP_CLIENT_ID", "")
+LP_CLIENT_SECRET = os.environ.get("LP_CLIENT_SECRET", "")
+
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("entrypoint")
 
@@ -486,6 +489,19 @@ def prepare_template_ctx(manager):
     return ctx
 
 
+def update_credentials_account():
+    json_file = "/app/templates/passport/passport-central-config.json"
+
+    config = {}
+    with open(json_file) as data:
+        config = json.load(data)
+    
+    config["providers"][0]["options"]["clientID"] = str(LP_CLIENT_ID)
+    config["providers"][0]["options"]["clientSecret"] = str(LP_CLIENT_SECRET)
+
+    with open(json_file, 'w') as j:
+        json.dump(config, j)
+
 class CouchbaseBackend(object):
     def __init__(self, manager):
         hostname = GLUU_COUCHBASE_URL
@@ -867,6 +883,8 @@ class HybridBackend(object):
 
 
 def main():
+    update_credentials_account()
+
     manager = get_manager()
 
     backend_classes = {
