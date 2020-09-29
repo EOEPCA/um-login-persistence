@@ -165,3 +165,15 @@ inum: a7684d1b-0e32-4585-954a-13b708a0b5e1
 oxId: protected_access
 oxScopeType: uma
 displayName: protected_access
+
+# Is Operator scope
+dn: inum=9aef666a-da23-4d30-8b6b-ad92502a8f30,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxAuthClaim: inum=e73310fa-c8a1-4761-817a-6bbc12cb0984,ou=attributes,o=gluu
+defaultScope: true
+inum: 9aef666a-da23-4d30-8b6b-ad92502a8f30
+description: Scope that allows verification if a user is an operator
+oxId: is_operator
+oxScopeType: openid
+displayName: is_operator
