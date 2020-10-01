@@ -4736,6 +4736,7 @@
                 "gluuWhitePagesEnabled", 
                 "iname", 
                 "inum", 
+                "isOperator", 
                 "l", 
                 "mail", 
                 "memberOf", 
