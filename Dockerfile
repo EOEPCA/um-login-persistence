@@ -122,12 +122,11 @@ LABEL name="Persistence" \
     summary="Gluu Persistence" \
     description="Generate initial data for persistence layer"
 
-RUN mkdir -p /app/tmp /etc/certs /etc/gluu/conf /opt/opendj/config/schema
+RUN mkdir -p /app/tmp /etc/certs /etc/gluu/conf
 
 COPY scripts /app/scripts
 COPY static /app/static
 COPY templates /app/templates
-COPY static/opendj/77-customAttributes.ldif /opt/opendj/config/schema/77-customAttributes.ldif
 RUN chmod +x /app/scripts/entrypoint.sh
 
 ENTRYPOINT ["tini", "-g", "--"]

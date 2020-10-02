@@ -1315,7 +1315,7 @@ urn: urn:mace:dir:attribute-def:userCertificate
 dn: inum=e73310fa-c8a1-4761-817a-6bbc12cb0984,ou=attributes,o=gluu
 objectClass: top
 objectClass: gluuAttribute
-gluuAttributeOrigin: gluuCustomPerson
+gluuAttributeOrigin: gluuPerson
 inum: e73310fa-c8a1-4761-817a-6bbc12cb0984
 oxMultivaluedAttribute: false
 oxSCIMCustomAttribute: false
