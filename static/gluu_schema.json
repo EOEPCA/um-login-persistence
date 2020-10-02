@@ -4557,6 +4557,17 @@
             "substr": "caseIgnoreSubstringsMatch", 
             "syntax": "1.3.6.1.4.1.1466.115.121.1.15", 
             "x_origin": "Gluu created attribute"
+        },
+        {
+            "desc": "Custom Attribute", 
+            "equality": "caseIgnoreMatch", 
+            "names": [
+                "isOperator"
+            ], 
+            "oid": "oxAttribute", 
+            "substr": "caseIgnoreSubstringsMatch", 
+            "syntax": "1.3.6.1.4.1.1466.115.121.1.15", 
+            "x_origin": "Gluu custom attribute"
         }
     ], 
     "objectClasses": [
@@ -4678,6 +4689,43 @@
         {
             "kind": "STRUCTURAL", 
             "may": [
+                "isOperator", 
+                "telephoneNumber", 
+                "mobile", 
+                "carLicense", 
+                "facsimileTelephoneNumber", 
+                "departmentNumber", 
+                "employeeType", 
+                "cn", 
+                "st", 
+                "manager", 
+                "street", 
+                "postOfficeBox", 
+                "employeeNumber", 
+                "preferredDeliveryMethod", 
+                "roomNumber", 
+                "secretary", 
+                "homePostalAddress", 
+                "l", 
+                "postalCode", 
+                "description", 
+                "title"
+            ], 
+            "must": [
+                "objectclass"
+            ], 
+            "names": [
+                "gluuCustomPerson"
+            ], 
+            "oid": "oxObjectClass", 
+            "sup": [
+                "top"
+            ], 
+            "x_origin": "Gluu - Custom persom objectclass"
+        }, 
+        {
+            "kind": "STRUCTURAL", 
+            "may": [
                 "c", 
                 "description", 
                 "displayName", 
@@ -4736,7 +4784,6 @@
                 "gluuWhitePagesEnabled", 
                 "iname", 
                 "inum", 
-                "isOperator", 
                 "l", 
                 "mail", 
                 "memberOf", 
