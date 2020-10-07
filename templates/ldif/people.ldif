@@ -14,6 +14,7 @@ userPassword: %(encoded_oxtrust_admin_password)s
 gluuStatus: active
 memberOf: inum=60B7,ou=groups,o=gluu
 displayName: Default Admin User
+apiKeys: ['GitHub': '66666-66666-66666-6666']
 mail: admin@%(hostname)s
 emailVerified: true
 telephoneNumber: 555-1212
@@ -25,3 +26,4 @@ gender: male
 birthdate: 20170907123010.485Z
 zoneinfo: America/Los_Angeles
 c: US
+
