@@ -1311,26 +1311,6 @@ objectClass: gluuAttribute
 oxValidation: {"minLength":null,"maxLength":2048,"regexp":""}
 urn: urn:mace:dir:attribute-def:userCertificate
 
-# Is Operator boolean for PEP verification
-dn: inum=e73310fa-c8a1-4761-817a-6bbc12cb0984,ou=attributes,o=gluu
-objectClass: top
-objectClass: gluuAttribute
-gluuAttributeOrigin: gluuCustomPerson
-inum: e73310fa-c8a1-4761-817a-6bbc12cb0984
-oxMultivaluedAttribute: false
-oxSCIMCustomAttribute: false
-oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
-displayName: Is Operator
-gluuAttributeType: boolean
-gluuStatus: active
-gluuSAML2URI: urn:oid:isOperator
-gluuSAML1URI: urn:gluu:dir:attribute-def:isOperator
-gluuAttributeName: isOperator
-gluuAttributeEditType: admin
-gluuAttributeViewType: admin
-gluuAttributeViewType: user
-description: Is this user an Operator?
-
 
 dn: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
 objectClass: top
