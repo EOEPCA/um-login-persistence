@@ -177,3 +177,13 @@ description: Scope that allows verification if a user is an operator
 oxId: is_operator
 oxScopeType: openid
 displayName: is_operator
+
+dn: inum=3e15ce49-9172-47cd-8d7e-06825a396572,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxAuthClaim: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
+defaultScope: true
+inum: 3e15ce49-9172-47cd-8d7e-06825a396572
+oxId: EOEPCA
+oxScopeType: uma
+displayName: EOEPCA

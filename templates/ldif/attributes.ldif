@@ -1330,3 +1330,22 @@ gluuAttributeEditType: admin
 gluuAttributeViewType: admin
 gluuAttributeViewType: user
 description: Is this user an Operator?
+
+
+dn: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
+objectClass: top
+objectClass: gluuAttribute
+gluuAttributeOrigin: gluuCustomPerson
+inum: c3fb230d-2057-45de-8be1-0fbee3fe7e97
+oxMultivaluedAttribute: false
+oxSCIMCustomAttribute: false
+oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
+displayName: API Keys
+gluuAttributeType: string
+gluuStatus: active
+gluuSAML2URI: urn:gluu:dir:attribute-def:apiKeys
+gluuSAML1URI: urn:oid:apiKeys
+gluuAttributeName: apiKeys
+gluuAttributeEditType: admin
+gluuAttributeViewType: admin
+description: List of API Keys

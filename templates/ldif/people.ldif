@@ -10,6 +10,7 @@ nickname: Admin
 preferredUsername: admin
 sn: User
 isOperator: false
+apiKeys: []
 userPassword: %(encoded_oxtrust_admin_password)s
 gluuStatus: active
 memberOf: inum=60B7,ou=groups,o=gluu
