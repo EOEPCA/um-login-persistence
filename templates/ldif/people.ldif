@@ -14,6 +14,7 @@ gluuStatus: active
 memberOf: inum=60B7,ou=groups,o=gluu
 displayName: Default Admin User
 apiKeys: []
+isOperator: false
 mail: admin@%(hostname)s
 emailVerified: true
 telephoneNumber: 555-1212
