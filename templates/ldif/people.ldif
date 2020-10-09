@@ -9,11 +9,12 @@ middleName: Admin
 nickname: Admin
 preferredUsername: admin
 sn: User
-isOperator: false
 userPassword: %(encoded_oxtrust_admin_password)s
 gluuStatus: active
 memberOf: inum=60B7,ou=groups,o=gluu
 displayName: Default Admin User
+apiKeys: []
+isOperator: false
 mail: admin@%(hostname)s
 emailVerified: true
 telephoneNumber: 555-1212
@@ -25,3 +26,4 @@ gender: male
 birthdate: 20170907123010.485Z
 zoneinfo: America/Los_Angeles
 c: US
+
