@@ -13,7 +13,7 @@ userPassword: %(encoded_oxtrust_admin_password)s
 gluuStatus: active
 memberOf: inum=60B7,ou=groups,o=gluu
 displayName: Default Admin User
-apiKeys: ['GitHub': '66666-66666-66666-6666']
+apiKeys: [:]
 mail: admin@%(hostname)s
 emailVerified: true
 telephoneNumber: 555-1212

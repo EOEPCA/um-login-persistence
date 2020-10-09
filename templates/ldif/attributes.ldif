@@ -1318,7 +1318,7 @@ objectClass: gluuAttribute
 gluuAttributeOrigin: gluuCustomPerson
 inum: c3fb230d-2057-45de-8be1-0fbee3fe7e97
 oxMultivaluedAttribute: false
-oxSCIMCustomAttribute: false
+oxSCIMCustomAttribute: true
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
 displayName: API Keys
 gluuAttributeType: string
@@ -1327,5 +1327,7 @@ gluuSAML2URI: urn:gluu:dir:attribute-def:apiKeys
 gluuSAML1URI: urn:oid:apiKeys
 gluuAttributeName: apiKeys
 gluuAttributeEditType: admin
+gluuAttributeEditType: user
 gluuAttributeViewType: admin
-description: List of API Keys
+gluuAttributeViewType: user
+description: List of API Keys modified
