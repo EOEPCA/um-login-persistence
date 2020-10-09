@@ -53,6 +53,20 @@ class UmaRptPolicy(UmaRptPolicyType):
             tokenExp = int(json.loads(decoded)["exp"])
             user = userService.getUserByInum(userInum)
             logged_in = authenticationService.authenticate(user.getUserId())
+            
+            # Temporary Workaround to allow for Automated EOEPCA Acceptance tests
+            # [workaround]
+            #get scopes associated with client
+            client_scopes = context.getClient().getScopes()
+            print "Client scopes are: " + str(client_scopes)
+            #check for presence of "automated" scope
+            #this is a temporary, special operator that simply indicates this client is part of
+            # automated testing
+            if "automated" in client_scopes:
+                print "Client is automated!"
+                return True
+            # [/workaround]
+            
         except:
             print "Authenticated RPT Policy. No claim token passed!"
             return False
