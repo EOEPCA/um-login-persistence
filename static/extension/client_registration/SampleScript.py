@@ -36,27 +36,18 @@ class ClientRegistration(ClientRegistrationType):
     def createClient(self, registerRequest, client, configurationAttributes):
         print "Client registration. CreateClient method"
 
-        redirectUris = client.getRedirectUris()
-        print "Client registration. Redirect Uris: %s" % redirectUris
+        #Temporary workaround for acceptance scripts
+        #Forcefully adds the "automated" scope on dynamically registered clients        
+        print "Client registration. Adding 'automated' scope"
+        automated_inum = "inum=03de78be-34e8-4a77-8af6-384dd90d9fa3,ou=scopes,o=gluu"
 
-        addAddressScope = False
-        for redirectUri in redirectUris:
-            if (self.clientRedirectUrisSet.contains(redirectUri)):
-                addAddressScope = True
-                break
+        currentScopes = client.getScopes()
+        print "Client registration. Current scopes: %s" % currentScopes
         
-        print "Client registration. Is add address scope: %s" % addAddressScope
+        newScopes = ArrayHelper.addItemToStringArray(currentScopes, automated_inum)
 
-        if addAddressScope:
-            currentScopes = client.getScopes()
-            print "Client registration. Current scopes: %s" % currentScopes
-            
-            scopeService = CdiUtil.bean(ScopeService)
-            addressScope = scopeService.getScopeByDisplayName("address")
-            newScopes = ArrayHelper.addItemToStringArray(currentScopes, addressScope.getDn())
-    
-            print "Client registration. Result scopes: %s" % newScopes
-            client.setScopes(newScopes)
+        print "Client registration. Result scopes: %s" % newScopes
+        client.setScopes(newScopes)
 
         return True
 
