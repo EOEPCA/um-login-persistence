@@ -15,6 +15,7 @@ from org.gluu.service.cdi.util import CdiUtil
 from org.gluu.util import StringHelper, ArrayHelper
 from java.util import Arrays, ArrayList, HashSet
 from java.lang import String
+from org.gluu.oxauth.service import ClientService
 
 class UmaRptPolicy(UmaRptPolicyType):
 
@@ -44,6 +45,28 @@ class UmaRptPolicy(UmaRptPolicyType):
 
         client_id=context.getClient().getClientId()
         print "UmaRptPolicy. client_id = %s" % client_id
+        
+        # Temporary Workaround to allow for Automated EOEPCA Acceptance tests
+        # [workaround]
+        clientService = CdiUtil.bean(ClientService)
+        automated_inum = "inum=03de78be-34e8-4a77-8af6-384dd90d9fa3,ou=scopes,o=gluu"
+        try:
+            #get scopes associated with client
+            client_scopes = clientService.getClient(client_id).getScopes()
+            print "Client scopes are: " + str(client_scopes)
+            #check for presence of "automated" scope
+            #this is a temporary, special operator that simply indicates this client is part of
+            # automated testing
+            if not ArrayHelper.isEmpty(client_scopes):
+                for scope in client_scopes:
+                    if automated_inum in scope:
+                        print "UmaRptPolicy. Client is automated!"
+                        return True
+            
+        except:
+            print "UmaRptPolicy. Error reading scopes!"
+            return False
+        # [/workaround]
 
         if (StringHelper.isEmpty(client_id)):
             return False
