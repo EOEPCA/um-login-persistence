@@ -57,7 +57,7 @@ class UmaRptPolicy(UmaRptPolicyType):
             #check for presence of "automated" scope
             #this is a temporary, special operator that simply indicates this client is part of
             # automated testing
-            if not ArrayHelper.isEmpty(client_scopes):
+            if client_scopes and not ArrayHelper.isEmpty(client_scopes):
                 for scope in client_scopes:
                     if automated_inum in scope:
                         print "UmaRptPolicy. Client is automated!"
