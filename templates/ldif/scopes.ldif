@@ -33,6 +33,7 @@ oxAuthClaim: inum=A901,ou=attributes,o=gluu
 oxAuthClaim: inum=36D9,ou=attributes,o=gluu
 oxAuthClaim: inum=BE64,ou=attributes,o=gluu
 oxAuthClaim: inum=6493,ou=attributes,o=gluu
+oxAuthClaim: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
 oxScopeType: openid
 
 dn: inum=764C,ou=scopes,o=gluu
@@ -166,7 +167,6 @@ oxId: protected_access
 oxScopeType: uma
 displayName: protected_access
 
-# Is Operator scope
 dn: inum=9aef666a-da23-4d30-8b6b-ad92502a8f30,ou=scopes,o=gluu
 objectClass: top
 objectClass: oxAuthCustomScope
@@ -188,3 +188,15 @@ description: Temporary OAuth scope to allow for automated Acceptance tests
 oxId: automated
 oxScopeType: oauth
 displayName: automated
+
+dn: inum=6d23f1c3-cfa6-4437-bd4f-32c696417889,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxAuthClaim: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
+defaultScope: true
+inum: 6d23f1c3-cfa6-4437-bd4f-32c696417889
+description: EOEPCA scope for Personal data edition
+oxId: eoepca
+oxScopeType: openid
+displayName: eoepca
+
