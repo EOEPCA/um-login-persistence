@@ -178,6 +178,17 @@ oxId: is_operator
 oxScopeType: openid
 displayName: is_operator
 
+# Temporary automated scope for acceptance testing
+dn: inum=03de78be-34e8-4a77-8af6-384dd90d9fa3,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+defaultScope: true
+inum: 03de78be-34e8-4a77-8af6-384dd90d9fa3
+description: Temporary OAuth scope to allow for automated Acceptance tests
+oxId: automated
+oxScopeType: oauth
+displayName: automated
+
 dn: inum=6d23f1c3-cfa6-4437-bd4f-32c696417889,ou=scopes,o=gluu
 objectClass: top
 objectClass: oxAuthCustomScope
