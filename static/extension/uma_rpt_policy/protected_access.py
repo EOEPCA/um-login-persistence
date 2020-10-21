@@ -65,7 +65,10 @@ class UmaRptPolicy(UmaRptPolicyType):
             payload = str(claimToken).split(".")[1]
             paddedPayload = payload + '=' * (4 - len(payload) % 4)
             decoded = base64.b64decode(paddedPayload)
+            print str(decoded)
             userInum = json.loads(decoded)["sub"]
+            tokenExp = int(json.loads(decoded)["exp"])
+            print str(tokenExp)
             username = userService.getUserByInum(userInum).getUserId()
             resourceIDList = context.getResourceIds()
         except Exception as e:
@@ -73,10 +76,14 @@ class UmaRptPolicy(UmaRptPolicyType):
             print str(e)
             return False
 
+        if tokenExp < int(time.time()):
+            print "Protected Access Policy. Claim token has expired!"
+            return False
+
         #fill request form
         request = {}
         #Add Access Subject with user_id and claim_token attributes
-        attribute_user_id = { "AttributeId": "user_id", "Value": str(username), "DataType": "string", "IncludeInResult": True }
+        attribute_user_id = { "AttributeId": "user_id", "Issuer": "", "Value": str(username), "DataType": "string", "IncludeInResult": True }
         attribute_claim_token = {"AttributeId": "claim_token", "Value": str(claimToken), "DataType": "string", "IncludeInResult": True}
         access_subject_attributes = [attribute_user_id, attribute_claim_token]
         accessSubject = {"Attribute": access_subject_attributes}
