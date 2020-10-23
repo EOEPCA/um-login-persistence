@@ -62,13 +62,14 @@ class UmaRptPolicy(UmaRptPolicyType):
         
         try:
             claimToken = context.getClaimToken()
+            print "Claim token: " + str(claimToken)
             payload = str(claimToken).split(".")[1]
             paddedPayload = payload + '=' * (4 - len(payload) % 4)
             decoded = base64.b64decode(paddedPayload)
             print str(decoded)
             userInum = json.loads(decoded)["sub"]
             tokenExp = int(json.loads(decoded)["exp"])
-            print str(tokenExp)
+            issuer = json.loads(decoded)["iss"]
             username = userService.getUserByInum(userInum).getUserId()
             resourceIDList = context.getResourceIds()
         except Exception as e:
@@ -80,12 +81,20 @@ class UmaRptPolicy(UmaRptPolicyType):
             print "Protected Access Policy. Claim token has expired!"
             return False
 
+        #Get external attributes
+        external_attributes_list = self.getExternalAttributes(str(issuer), json.loads(decoded))
+
         #fill request form
         request = {}
         #Add Access Subject with user_id and claim_token attributes
-        attribute_user_id = { "AttributeId": "user_id", "Issuer": "", "Value": str(username), "DataType": "string", "IncludeInResult": True }
+        attribute_user_id = { "AttributeId": "user_id", "Issuer": str(issuer), "Value": str(username), "DataType": "string", "IncludeInResult": True }
         attribute_claim_token = {"AttributeId": "claim_token", "Value": str(claimToken), "DataType": "string", "IncludeInResult": True}
         access_subject_attributes = [attribute_user_id, attribute_claim_token]
+
+        if len(external_attributes_list) > 0:
+            for i in range(0, len(external_attributes_list)):
+                access_subject_attributes.append(external_attributes_list[i])
+
         accessSubject = {"Attribute": access_subject_attributes}
         access_subject_list = [accessSubject]
         request.update({"AccessSubject": access_subject_list})
@@ -109,6 +118,8 @@ class UmaRptPolicy(UmaRptPolicyType):
 
         #Build request form in JSON format
         requestForm = {"Request": request}
+
+        print(requestForm)
 
         #Make request to PDP
         try:
@@ -136,3 +147,29 @@ class UmaRptPolicy(UmaRptPolicyType):
 
     def getClaimsGatheringScriptName(self, context):
         return UmaConstants.NO_SCRIPT
+
+    def getExternalAttributes(self, issuer, decoded):
+        external_attributes = []
+
+        for key in decoded.keys():
+            if key != "iss" and key != "aud" and key != "iat" and key != "exp" and key != "sub":
+                external_attributes_dict = {}
+                external_attributes_dict["AttributeId"] = str(key)
+                external_attributes_dict["IncludeInResult"] = True
+
+                if decoded[key] == 'true':
+                    external_attributes_dict["Value"] = True
+                    external_attributes_dict["DataType"] = "boolean"
+                elif decoded[key] == 'false':
+                    external_attributes_dict["Value"] = False
+                    external_attributes_dict["DataType"] = "boolean"
+                elif isinstance(decoded[key], int):
+                    external_attributes_dict["Value"] = int(decoded[key])
+                    external_attributes_dict["DataType"] = "integer"
+                else:
+                    external_attributes_dict["Value"] = str(decoded[key])
+                    external_attributes_dict["DataType"] = "string"
+
+                external_attributes.append(external_attributes_dict)
+
+        return external_attributes
