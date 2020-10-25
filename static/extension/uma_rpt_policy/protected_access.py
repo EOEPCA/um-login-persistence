@@ -62,15 +62,22 @@ class UmaRptPolicy(UmaRptPolicyType):
         
         try:
             claimToken = context.getClaimToken()
-            print "Claim token: " + str(claimToken)
             payload = str(claimToken).split(".")[1]
             paddedPayload = payload + '=' * (4 - len(payload) % 4)
             decoded = base64.b64decode(paddedPayload)
-            print str(decoded)
-            userInum = json.loads(decoded)["sub"]
-            tokenExp = int(json.loads(decoded)["exp"])
             issuer = json.loads(decoded)["iss"]
-            username = userService.getUserByInum(userInum).getUserId()
+
+            if "user_name" not in json.loads(decoded).keys():
+                userInum = json.loads(decoded)["sub"]
+
+                if issuer == "https://test.10.0.2.15.nip.io":
+                    username = userService.getUserByInum(userInum).getUserId()
+                else:
+                    username = userInum
+            else:
+                username = json.loads(decoded)["user_name"]
+
+            tokenExp = int(json.loads(decoded)["exp"])
             resourceIDList = context.getResourceIds()
         except Exception as e:
             print "Protected Access Policy. No claim token passed!"
@@ -118,8 +125,6 @@ class UmaRptPolicy(UmaRptPolicyType):
 
         #Build request form in JSON format
         requestForm = {"Request": request}
-
-        print(requestForm)
 
         #Make request to PDP
         try:
