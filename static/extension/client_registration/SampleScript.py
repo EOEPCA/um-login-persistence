@@ -44,7 +44,10 @@ class ClientRegistration(ClientRegistrationType):
         currentScopes = client.getScopes()
         print "Client registration. Current scopes: %s" % currentScopes
         
-        newScopes = ArrayHelper.addItemToStringArray(currentScopes, automated_inum)
+        if not currentScopes:
+            newScopes = [automated_inum]
+        else:
+            newScopes = ArrayHelper.addItemToStringArray(currentScopes, automated_inum)
 
         print "Client registration. Result scopes: %s" % newScopes
         client.setScopes(newScopes)
