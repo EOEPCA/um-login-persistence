@@ -62,6 +62,7 @@ class UmaRptPolicy(UmaRptPolicyType):
         
         try:
             claimToken = context.getClaimToken()
+            uma_issuer = str(context.getIssuer())
             payload = str(claimToken).split(".")[1]
             paddedPayload = payload + '=' * (4 - len(payload) % 4)
             decoded = base64.b64decode(paddedPayload)
@@ -70,7 +71,7 @@ class UmaRptPolicy(UmaRptPolicyType):
             if "user_name" not in json.loads(decoded).keys():
                 userInum = json.loads(decoded)["sub"]
 
-                if issuer == "https://test.10.0.2.15.nip.io":
+                if issuer == uma_issuer:
                     username = userService.getUserByInum(userInum).getUserId()
                 else:
                     username = userInum
@@ -89,7 +90,7 @@ class UmaRptPolicy(UmaRptPolicyType):
             return False
 
         #Get external attributes
-        external_attributes_list = self.getExternalAttributes(str(issuer), json.loads(decoded))
+        external_attributes_list = self.getExternalAttributes(json.loads(decoded))
 
         #fill request form
         request = {}
@@ -153,11 +154,11 @@ class UmaRptPolicy(UmaRptPolicyType):
     def getClaimsGatheringScriptName(self, context):
         return UmaConstants.NO_SCRIPT
 
-    def getExternalAttributes(self, issuer, decoded):
+    def getExternalAttributes(self, decoded):
         external_attributes = []
 
         for key in decoded.keys():
-            if key != "iss" and key != "aud" and key != "iat" and key != "exp" and key != "sub":
+            if key != "iss" and key != "aud" and key != "iat" and key != "exp" and key != "sub" and key != "user_name":
                 external_attributes_dict = {}
                 external_attributes_dict["AttributeId"] = str(key)
                 external_attributes_dict["IncludeInResult"] = True
