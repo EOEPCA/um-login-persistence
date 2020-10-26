@@ -1331,6 +1331,7 @@ gluuAttributeViewType: admin
 gluuAttributeViewType: user
 description: Is this user an Operator?
 
+# List of API Keys for all users, text value, JSON format
 dn: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
 objectClass: top
 objectClass: gluuAttribute
@@ -1350,3 +1351,23 @@ gluuAttributeEditType: user
 gluuAttributeViewType: admin
 gluuAttributeViewType: user
 description: List of API Keys modified
+
+# List of Licenses for all users to manage, text value, JSON format
+dn: inum=25a08272-93e4-456c-bad5-bbb50ed7cbc0,ou=attributes,o=gluu
+objectClass: top
+objectClass: gluuAttribute
+gluuAttributeOrigin: gluuCustomPerson
+inum: 25a08272-93e4-456c-bad5-bbb50ed7cbc0
+oxMultivaluedAttribute: false
+oxSCIMCustomAttribute: true
+oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
+displayName: Licenses
+gluuAttributeType: string
+gluuStatus: active
+gluuSAML2URI: urn:gluu:dir:attribute-def:Licenses
+gluuSAML1URI: urn:oid:Licenses
+gluuAttributeName: Licenses
+gluuAttributeEditType: admin
+gluuAttributeViewType: admin
+gluuAttributeViewType: user
+description: Licenses Manager for the Users

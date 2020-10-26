@@ -193,6 +193,7 @@ dn: inum=6d23f1c3-cfa6-4437-bd4f-32c696417889,ou=scopes,o=gluu
 objectClass: top
 objectClass: oxAuthCustomScope
 oxAuthClaim: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
+oxAuthClaim: inum=25a08272-93e4-456c-bad5-bbb50ed7cbc0,ou=attributes,o=gluu
 defaultScope: true
 inum: 6d23f1c3-cfa6-4437-bd4f-32c696417889
 description: EOEPCA scope for Personal data edition
