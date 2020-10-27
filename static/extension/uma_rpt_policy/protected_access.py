@@ -62,23 +62,47 @@ class UmaRptPolicy(UmaRptPolicyType):
         
         try:
             claimToken = context.getClaimToken()
+            uma_issuer = str(context.getIssuer())
             payload = str(claimToken).split(".")[1]
             paddedPayload = payload + '=' * (4 - len(payload) % 4)
             decoded = base64.b64decode(paddedPayload)
-            userInum = json.loads(decoded)["sub"]
-            username = userService.getUserByInum(userInum).getUserId()
+            issuer = json.loads(decoded)["iss"]
+
+            if "user_name" not in json.loads(decoded).keys():
+                userInum = json.loads(decoded)["sub"]
+
+                if issuer == uma_issuer:
+                    username = userService.getUserByInum(userInum).getUserId()
+                else:
+                    username = userInum
+            else:
+                username = json.loads(decoded)["user_name"]
+
+            tokenExp = int(json.loads(decoded)["exp"])
             resourceIDList = context.getResourceIds()
         except Exception as e:
             print "Protected Access Policy. No claim token passed!"
             print str(e)
             return False
 
+        if tokenExp < int(time.time()):
+            print "Protected Access Policy. Claim token has expired!"
+            return False
+
+        #Get external attributes
+        external_attributes_list = self.getExternalAttributes(json.loads(decoded))
+
         #fill request form
         request = {}
         #Add Access Subject with user_id and claim_token attributes
-        attribute_user_id = { "AttributeId": "user_id", "Value": str(username), "DataType": "string", "IncludeInResult": True }
+        attribute_user_id = { "AttributeId": "user_id", "Issuer": str(issuer), "Value": str(username), "DataType": "string", "IncludeInResult": True }
         attribute_claim_token = {"AttributeId": "claim_token", "Value": str(claimToken), "DataType": "string", "IncludeInResult": True}
         access_subject_attributes = [attribute_user_id, attribute_claim_token]
+
+        if len(external_attributes_list) > 0:
+            for i in range(0, len(external_attributes_list)):
+                access_subject_attributes.append(external_attributes_list[i])
+
         accessSubject = {"Attribute": access_subject_attributes}
         access_subject_list = [accessSubject]
         request.update({"AccessSubject": access_subject_list})
@@ -129,3 +153,29 @@ class UmaRptPolicy(UmaRptPolicyType):
 
     def getClaimsGatheringScriptName(self, context):
         return UmaConstants.NO_SCRIPT
+
+    def getExternalAttributes(self, decoded):
+        external_attributes = []
+
+        for key in decoded.keys():
+            if key != "iss" and key != "aud" and key != "iat" and key != "exp" and key != "sub" and key != "user_name":
+                external_attributes_dict = {}
+                external_attributes_dict["AttributeId"] = str(key)
+                external_attributes_dict["IncludeInResult"] = True
+
+                if decoded[key] == 'true':
+                    external_attributes_dict["Value"] = True
+                    external_attributes_dict["DataType"] = "boolean"
+                elif decoded[key] == 'false':
+                    external_attributes_dict["Value"] = False
+                    external_attributes_dict["DataType"] = "boolean"
+                elif isinstance(decoded[key], int):
+                    external_attributes_dict["Value"] = int(decoded[key])
+                    external_attributes_dict["DataType"] = "integer"
+                else:
+                    external_attributes_dict["Value"] = str(decoded[key])
+                    external_attributes_dict["DataType"] = "string"
+
+                external_attributes.append(external_attributes_dict)
+
+        return external_attributes
