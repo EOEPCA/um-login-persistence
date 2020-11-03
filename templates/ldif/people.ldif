@@ -16,6 +16,7 @@ displayName: Default Admin User
 apiKeys: {}
 Licenses: {}
 isOperator: false
+TermsConditions: {}
 mail: admin@%(hostname)s
 emailVerified: true
 telephoneNumber: 555-1212
