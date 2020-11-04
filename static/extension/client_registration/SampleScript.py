@@ -18,8 +18,6 @@ class ClientRegistration(ClientRegistrationType):
 
     def init(self, configurationAttributes):
         print "Client registration. Initialization"
-        
-        self.clientRedirectUrisSet = self.prepareClientRedirectUris(configurationAttributes)
 
         print "Client registration. Initialized successfully"
         return True   
@@ -36,27 +34,7 @@ class ClientRegistration(ClientRegistrationType):
     def createClient(self, registerRequest, client, configurationAttributes):
         print "Client registration. CreateClient method"
 
-        redirectUris = client.getRedirectUris()
-        print "Client registration. Redirect Uris: %s" % redirectUris
-
-        addAddressScope = False
-        for redirectUri in redirectUris:
-            if (self.clientRedirectUrisSet.contains(redirectUri)):
-                addAddressScope = True
-                break
-        
-        print "Client registration. Is add address scope: %s" % addAddressScope
-
-        if addAddressScope:
-            currentScopes = client.getScopes()
-            print "Client registration. Current scopes: %s" % currentScopes
-            
-            scopeService = CdiUtil.bean(ScopeService)
-            addressScope = scopeService.getScopeByDisplayName("address")
-            newScopes = ArrayHelper.addItemToStringArray(currentScopes, addressScope.getDn())
-    
-            print "Client registration. Result scopes: %s" % newScopes
-            client.setScopes(newScopes)
+        client.setIncludeClaimsInIdToken(True)
 
         return True
 
@@ -70,28 +48,3 @@ class ClientRegistration(ClientRegistrationType):
 
     def getApiVersion(self):
         return 2
-
-    def prepareClientRedirectUris(self, configurationAttributes):
-        clientRedirectUrisSet = HashSet()
-        if not configurationAttributes.containsKey("client_redirect_uris"):
-            return clientRedirectUrisSet
-
-        clientRedirectUrisList = configurationAttributes.get("client_redirect_uris").getValue2()
-        if StringHelper.isEmpty(clientRedirectUrisList):
-            print "Client registration. The property client_redirect_uris is empty"
-            return clientRedirectUrisSet    
-
-        clientRedirectUrisArray = StringHelper.split(clientRedirectUrisList, ",")
-        if ArrayHelper.isEmpty(clientRedirectUrisArray):
-            print "Client registration. No clients specified in client_redirect_uris property"
-            return clientRedirectUrisSet
-        
-        # Convert to HashSet to quick search
-        i = 0
-        count = len(clientRedirectUrisArray)
-        while i < count:
-            uris = clientRedirectUrisArray[i]
-            clientRedirectUrisSet.add(uris)
-            i = i + 1
-
-        return clientRedirectUrisSet
