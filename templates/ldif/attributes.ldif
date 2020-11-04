@@ -1371,3 +1371,24 @@ gluuAttributeEditType: admin
 gluuAttributeViewType: admin
 gluuAttributeViewType: user
 description: Licenses Manager for the Users
+
+#List of Documents of terms and conditions
+dn: inum=6b6565e8-006d-43c7-baeb-9a3a87c5f9a7,ou=attributes,o=gluu
+objectClass: top
+objectClass: gluuAttribute
+gluuAttributeOrigin: gluuCustomPerson
+inum: 6b6565e8-006d-43c7-baeb-9a3a87c5f9a7
+oxMultivaluedAttribute: false
+oxSCIMCustomAttribute: true
+oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
+displayName: Terms and Conditions
+gluuAttributeType: string
+gluuStatus: active
+gluuSAML2URI: urn:gluu:dir:attribute-def:TermsConditions
+gluuSAML1URI: urn:oid:TermsConditions
+gluuAttributeName: TermsConditions
+gluuAttributeEditType: admin
+gluuAttributeViewType: admin
+gluuAttributeViewType: user
+description: List of Documents of terms and conditions
+gluuAttributeUsageType: openid
