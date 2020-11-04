@@ -33,9 +33,7 @@ class ClientRegistration(ClientRegistrationType):
     #   configurationAttributes is java.util.Map<String, SimpleCustomProperty>
     def createClient(self, registerRequest, client, configurationAttributes):
         print "Client registration. CreateClient method"
-
         client.setIncludeClaimsInIdToken(True)
-
         return True
 
     # Update client entry before persistent it
