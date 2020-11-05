@@ -487,7 +487,7 @@ objectClass: top
 objectClass: oxCustomScript
 description: Sample Client Registration script
 displayName: client_registration
-oxEnabled: false
+oxEnabled: true
 inum: DAA9-B788
 oxLevel: 100
 oxConfigurationProperty: {"value1":"client_redirect_uris","value2":"https://client.example.com/example1, https://client.example.com/example2","description":""}
