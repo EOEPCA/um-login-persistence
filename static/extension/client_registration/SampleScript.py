@@ -18,6 +18,8 @@ class ClientRegistration(ClientRegistrationType):
 
     def init(self, configurationAttributes):
         print "Client registration. Initialization"
+        
+        self.clientRedirectUrisSet = self.prepareClientRedirectUris(configurationAttributes)
 
         print "Client registration. Initialized successfully"
         return True   
@@ -34,6 +36,22 @@ class ClientRegistration(ClientRegistrationType):
     def createClient(self, registerRequest, client, configurationAttributes):
         print "Client registration. CreateClient method"
 
+        #Temporary workaround for acceptance scripts
+        #Forcefully adds the "automated" scope on dynamically registered clients        
+        print "Client registration. Adding 'automated' scope"
+        automated_inum = "inum=03de78be-34e8-4a77-8af6-384dd90d9fa3,ou=scopes,o=gluu"
+
+        currentScopes = client.getScopes()
+        print "Client registration. Current scopes: %s" % currentScopes
+        
+        if not currentScopes:
+            newScopes = [automated_inum]
+        else:
+            newScopes = ArrayHelper.addItemToStringArray(currentScopes, automated_inum)
+
+        print "Client registration. Result scopes: %s" % newScopes
+        client.setScopes(newScopes)
+
         client.setIncludeClaimsInIdToken(True)
 
         return True
@@ -48,3 +66,28 @@ class ClientRegistration(ClientRegistrationType):
 
     def getApiVersion(self):
         return 2
+
+    def prepareClientRedirectUris(self, configurationAttributes):
+        clientRedirectUrisSet = HashSet()
+        if not configurationAttributes.containsKey("client_redirect_uris"):
+            return clientRedirectUrisSet
+
+        clientRedirectUrisList = configurationAttributes.get("client_redirect_uris").getValue2()
+        if StringHelper.isEmpty(clientRedirectUrisList):
+            print "Client registration. The property client_redirect_uris is empty"
+            return clientRedirectUrisSet    
+
+        clientRedirectUrisArray = StringHelper.split(clientRedirectUrisList, ",")
+        if ArrayHelper.isEmpty(clientRedirectUrisArray):
+            print "Client registration. No clients specified in client_redirect_uris property"
+            return clientRedirectUrisSet
+        
+        # Convert to HashSet to quick search
+        i = 0
+        count = len(clientRedirectUrisArray)
+        while i < count:
+            uris = clientRedirectUrisArray[i]
+            clientRedirectUrisSet.add(uris)
+            i = i + 1
+
+        return clientRedirectUrisSet
