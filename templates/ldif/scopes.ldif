@@ -165,3 +165,14 @@ inum: a7684d1b-0e32-4585-954a-13b708a0b5e1
 oxId: protected_access
 oxScopeType: uma
 displayName: protected_access
+
+# Temporary automated scope for acceptance testing
+dn: inum=03de78be-34e8-4a77-8af6-384dd90d9fa3,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+defaultScope: true
+inum: 03de78be-34e8-4a77-8af6-384dd90d9fa3
+description: Temporary OAuth scope to allow for automated Acceptance tests
+oxId: automated
+oxScopeType: oauth
+displayName: automated
