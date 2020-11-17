@@ -52,6 +52,9 @@ class ClientRegistration(ClientRegistrationType):
         print "Client registration. Result scopes: %s" % newScopes
         client.setScopes(newScopes)
 
+        client.setIncludeClaimsInIdToken(True)
+        client.setRptAsJwt(True)
+
         return True
 
     # Update client entry before persistent it
