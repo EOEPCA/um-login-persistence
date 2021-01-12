@@ -52,7 +52,7 @@ class UmaRptPolicy(UmaRptPolicyType):
             userInum = json.loads(decoded)["sub"]
             tokenExp = int(json.loads(decoded)["exp"])
             user = userService.getUserByInum(userInum)
-            logged_in = authenticationService.authenticate(user.getUserId())
+            logged_in = authenticationService.authenticate(user.getUserId())            
         except:
             print "Authenticated RPT Policy. No claim token passed!"
             return False

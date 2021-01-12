@@ -53,6 +53,7 @@ class ClientRegistration(ClientRegistrationType):
         client.setScopes(newScopes)
 
         client.setIncludeClaimsInIdToken(True)
+        client.setRptAsJwt(True)
 
         return True
 

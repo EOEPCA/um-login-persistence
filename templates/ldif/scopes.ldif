@@ -33,6 +33,7 @@ oxAuthClaim: inum=A901,ou=attributes,o=gluu
 oxAuthClaim: inum=36D9,ou=attributes,o=gluu
 oxAuthClaim: inum=BE64,ou=attributes,o=gluu
 oxAuthClaim: inum=6493,ou=attributes,o=gluu
+oxAuthClaim: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
 oxScopeType: openid
 
 dn: inum=764C,ou=scopes,o=gluu
@@ -166,6 +167,17 @@ oxId: protected_access
 oxScopeType: uma
 displayName: protected_access
 
+dn: inum=9aef666a-da23-4d30-8b6b-ad92502a8f30,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxAuthClaim: inum=e73310fa-c8a1-4761-817a-6bbc12cb0984,ou=attributes,o=gluu
+defaultScope: true
+inum: 9aef666a-da23-4d30-8b6b-ad92502a8f30
+description: Scope that allows verification if a user is an operator
+oxId: is_operator
+oxScopeType: openid
+displayName: is_operator
+
 # Temporary automated scope for acceptance testing
 dn: inum=03de78be-34e8-4a77-8af6-384dd90d9fa3,ou=scopes,o=gluu
 objectClass: top
@@ -176,3 +188,16 @@ description: Temporary OAuth scope to allow for automated Acceptance tests
 oxId: automated
 oxScopeType: oauth
 displayName: automated
+
+dn: inum=6d23f1c3-cfa6-4437-bd4f-32c696417889,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxAuthClaim: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
+oxAuthClaim: inum=25a08272-93e4-456c-bad5-bbb50ed7cbc0,ou=attributes,o=gluu
+oxAuthClaim: inum=6b6565e8-006d-43c7-baeb-9a3a87c5f9a7,ou=attributes,o=gluu
+defaultScope: true
+inum: 6d23f1c3-cfa6-4437-bd4f-32c696417889
+description: EOEPCA scope for Personal data edition
+oxId: eoepca
+oxScopeType: openid
+displayName: eoepca
