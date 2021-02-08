@@ -36,7 +36,7 @@
           "mapping": "github",
           "passportStrategyId": "passport-github2",
           "enabled": true,
-          "callbackUrl": "https://demoexample.gluu.org/passport/auth/github/callback",
+          "callbackUrl": "https://%(hostname)s/passport/auth/github/callback",
           "requestForEmail": false,
           "emailLinkingSafe": true,
           "options": {
