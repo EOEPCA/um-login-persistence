@@ -216,7 +216,7 @@ displayName: protected_read
 dn: inum=b033fb32-f6ae-3002-647c-4ebb65f8b51e,ou=scopes,o=gluu
 objectClass: top
 objectClass: oxAuthCustomScope
-oxUmaPolicyScriptDn: inum=7307.FD65,ou=scripts,o=gluu
+oxUmaPolicyScriptDn: inum=EF11.EFEA,ou=scripts,o=gluu
 inum: b033fb32-f6ae-3002-647c-4ebb65f8b51e
 oxId: protected_write
 oxScopeType: uma
