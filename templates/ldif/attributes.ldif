@@ -1321,6 +1321,7 @@ oxMultivaluedAttribute: false
 oxSCIMCustomAttribute: false
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
 displayName: Is Operator
+oxAuthClaimName: isOperator
 gluuAttributeType: boolean
 gluuStatus: active
 gluuSAML2URI: urn:oid:isOperator
@@ -1341,6 +1342,7 @@ oxMultivaluedAttribute: false
 oxSCIMCustomAttribute: true
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
 displayName: API Keys
+oxAuthClaimName: apiKeys
 gluuAttributeType: string
 gluuStatus: active
 gluuSAML2URI: urn:gluu:dir:attribute-def:apiKeys
@@ -1362,6 +1364,7 @@ oxMultivaluedAttribute: false
 oxSCIMCustomAttribute: true
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
 displayName: Licenses
+oxAuthClaimName: Licenses
 gluuAttributeType: string
 gluuStatus: active
 gluuSAML2URI: urn:gluu:dir:attribute-def:Licenses
@@ -1382,6 +1385,7 @@ oxMultivaluedAttribute: false
 oxSCIMCustomAttribute: true
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
 displayName: Terms and Conditions
+oxAuthClaimName: TermsConditions
 gluuAttributeType: string
 gluuStatus: active
 gluuSAML2URI: urn:gluu:dir:attribute-def:TermsConditions
