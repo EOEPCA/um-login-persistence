@@ -1340,6 +1340,7 @@ inum: 649ff8aa-55aa-4366-a492-2a500a942fe2
 oxMultivaluedAttribute: true
 oxSCIMCustomAttribute: true
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
+oxAuthClaimName: StorageDetails
 displayName: StorageDetails
 gluuAttributeType: string
 gluuStatus: active
