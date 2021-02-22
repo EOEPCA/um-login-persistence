@@ -201,3 +201,23 @@ description: EOEPCA scope for Personal data edition
 oxId: eoepca
 oxScopeType: openid
 displayName: eoepca
+
+# Protected Read scope
+dn: inum=2ed4bb2d-c49b-7419-2a59-90f5969385dc,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=7307.FD65,ou=scripts,o=gluu
+inum: 2ed4bb2d-c49b-7419-2a59-90f5969385dc
+oxId: protected_read
+oxScopeType: uma
+displayName: protected_read
+
+# Protected Write scope
+dn: inum=b033fb32-f6ae-3002-647c-4ebb65f8b51e,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=EF11.EFEA,ou=scripts,o=gluu
+inum: b033fb32-f6ae-3002-647c-4ebb65f8b51e
+oxId: protected_write
+oxScopeType: uma
+displayName: protected_write
