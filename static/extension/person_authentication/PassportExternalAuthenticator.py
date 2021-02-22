@@ -39,9 +39,9 @@ class PersonAuthentication(PersonAuthenticationType):
 
         self.extensionModule = self.loadExternalModule(configurationAttributes.get("extension_module"))
         extensionResult = self.extensionInit(configurationAttributes)
+        self.onBMail = str(configurationAttributes.get("mail_enable").getValue2())
         if extensionResult != None:
             return extensionResult
-
         print "Passport. init. Behaviour is social"
         success = self.processKeyStoreProperties(configurationAttributes)
 
@@ -551,7 +551,8 @@ class PersonAuthentication(PersonAuthenticationType):
                 print "Passport. attemptAuthentication. Updating user %s" % username
                 self.updateUser(userByUid, user_profile, userService)
             elif doAdd:
-                self.sendOnBoardingMail(email)
+                if self.onBMail is "True":
+                    self.sendOnBoardingMail(email)
                 print "Passport. attemptAuthentication. Creating user %s" % externalUid
                 newUser = self.addUser(externalUid, user_profile, userService)
                 username = newUser.getUserId()

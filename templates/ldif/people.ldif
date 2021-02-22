@@ -17,6 +17,7 @@ apiKeys: {}
 Licenses: {}
 isOperator: false
 TermsConditions: {}
+StorageDetails: Object Storage bucket URI
 mail: admin@%(hostname)s
 emailVerified: true
 telephoneNumber: 555-1212
