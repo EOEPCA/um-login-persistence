@@ -221,3 +221,23 @@ inum: b033fb32-f6ae-3002-647c-4ebb65f8b51e
 oxId: protected_write
 oxScopeType: uma
 displayName: protected_write
+
+# Protected Get scope
+dn: inum=96beda61-db37-47df-ab86-89dd442450fd,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=8426.CEF1,ou=scripts,o=gluu
+inum: 96beda61-db37-47df-ab86-89dd442450fd
+oxId: protected_get
+oxScopeType: uma
+displayName: protected_get
+
+# Protected Put scope
+dn: inum=485bd102-1dbc-4002-94ee-0b9082e0e8f5,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=840B.0AC2,ou=scripts,o=gluu
+inum: 485bd102-1dbc-4002-94ee-0b9082e0e8f5
+oxId: protected_put
+oxScopeType: uma
+displayName: protected_put
