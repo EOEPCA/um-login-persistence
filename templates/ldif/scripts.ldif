@@ -661,7 +661,7 @@ oxScriptType: uma_rpt_policy
 oxRevision: 3
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"get","hide":false,"description":""}
 oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"demoexample.gluu.org:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_get_policy
 
@@ -677,7 +677,7 @@ inum: 840B.0AC2
 oxScriptType: uma_rpt_policy
 oxRevision: 1
 oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"demoexample.gluu.org:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"put","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_put_policy
