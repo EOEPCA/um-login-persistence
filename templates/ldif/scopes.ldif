@@ -221,3 +221,63 @@ inum: b033fb32-f6ae-3002-647c-4ebb65f8b51e
 oxId: protected_write
 oxScopeType: uma
 displayName: protected_write
+
+# Protected Get scope
+dn: inum=96beda61-db37-47df-ab86-89dd442450fd,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=8426.CEF1,ou=scripts,o=gluu
+inum: 96beda61-db37-47df-ab86-89dd442450fd
+oxId: protected_get
+oxScopeType: uma
+displayName: protected_get
+
+# Protected Put scope
+dn: inum=485bd102-1dbc-4002-94ee-0b9082e0e8f5,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=840B.0AC2,ou=scripts,o=gluu
+inum: 485bd102-1dbc-4002-94ee-0b9082e0e8f5
+oxId: protected_put
+oxScopeType: uma
+displayName: protected_put
+
+# Protected Post scope
+dn: inum=20f5299c-f733-4f1d-8283-6e063a19dc46,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=5451.8A8D,ou=scripts,o=gluu
+inum: 20f5299c-f733-4f1d-8283-6e063a19dc46
+oxId: protected_post
+oxScopeType: uma
+displayName: protected_post
+
+# Protected Delete scope
+dn: inum=36b9ec0f-9c69-4d30-8ada-193f607ceb4d,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=BAE0.8837,ou=scripts,o=gluu
+inum: 36b9ec0f-9c69-4d30-8ada-193f607ceb4d
+oxId: protected_delete
+oxScopeType: uma
+displayName: protected_delete
+
+# Protected Head scope
+dn: inum=0d0eacb2-4691-4967-9600-f5717ba0db68,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=380C.9060,ou=scripts,o=gluu
+inum: 0d0eacb2-4691-4967-9600-f5717ba0db68
+oxId: protected_head
+oxScopeType: uma
+displayName: protected_head
+
+# Protected Patch scope
+dn: inum=a85c4ce2-4755-48c0-9d45-378928d4b9f8,ou=scopes,o=gluu
+objectClass: top
+objectClass: oxAuthCustomScope
+oxUmaPolicyScriptDn: inum=1039.5896,ou=scripts,o=gluu
+inum: a85c4ce2-4755-48c0-9d45-378928d4b9f8
+oxId: protected_patch
+oxScopeType: uma
+displayName: protected_patch
