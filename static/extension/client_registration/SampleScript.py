@@ -7,10 +7,13 @@
 from org.gluu.model.custom.script.type.client import ClientRegistrationType
 from org.gluu.service.cdi.util import CdiUtil
 from org.gluu.oxauth.service import ScopeService
+from org.gluu.oxauth.model.common import ResponseType
+from org.gluu.oxauth.model.common import GrantType
 from org.gluu.util import StringHelper, ArrayHelper
 from java.util import Arrays, ArrayList, HashSet
 
 import java
+import json
 
 class ClientRegistration(ClientRegistrationType):
     def __init__(self, currentTimeMillis):
@@ -51,6 +54,22 @@ class ClientRegistration(ClientRegistrationType):
 
         print "Client registration. Result scopes: %s" % newScopes
         client.setScopes(newScopes)
+
+        # SW STATEMENT GRANT/RESPONSE TYPES WORKAROUND
+        if client.getSoftwareStatement():
+            metadata = Jwt.parse(client.getSoftwareStatement()).getClaims()
+            gts = json.loads(metadata.getClaimAsString("grant_types").encode("UTF-8"))[0]
+            rts = json.loads(metadata.getClaimAsString("response_types").encode("UTF-8"))[0]
+            if gts:
+                gt_list = []
+                for gt in gts.split(","):
+                    gt_list.append(GrantType.fromString(gt.encode("UTF-8")))
+            if rts:
+                rt_list = []
+                for rt in rts.split(","):
+                    rt_list.append(ResponseType.fromString(rt.encode("UTF-8")))
+            client.setGrantTypes(gt_list)
+            client.setResponseTypes(rt_list)
 
         client.setIncludeClaimsInIdToken(True)
         client.setRptAsJwt(True)
