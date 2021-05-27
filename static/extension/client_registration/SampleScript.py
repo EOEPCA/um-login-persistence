@@ -7,6 +7,7 @@
 from org.gluu.model.custom.script.type.client import ClientRegistrationType
 from org.gluu.service.cdi.util import CdiUtil
 from org.gluu.oxauth.service import ScopeService
+from org.gluu.oxauth.model.jwt import Jwt, JwtClaimName
 from org.gluu.oxauth.model.common import ResponseType
 from org.gluu.oxauth.model.common import GrantType
 from org.gluu.util import StringHelper, ArrayHelper
