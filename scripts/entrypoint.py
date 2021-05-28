@@ -53,6 +53,9 @@ GLUU_SCIM_TEST_MODE = os.environ.get("GLUU_SCIM_TEST_MODE", False)
 LP_CLIENT_ID = os.environ.get("LP_CLIENT_ID", "")
 LP_CLIENT_SECRET = os.environ.get("LP_CLIENT_SECRET", "")
 
+COIH_CLIENT_ID = os.environ.get("COIH_CLIENT_ID", "")
+COIH_CLIENT_SECRET = os.environ.get("COIH_CLIENT_SECRET", "")
+
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("entrypoint")
 
@@ -498,6 +501,9 @@ def update_credentials_account():
     
     config["providers"][0]["options"]["clientID"] = str(LP_CLIENT_ID)
     config["providers"][0]["options"]["clientSecret"] = str(LP_CLIENT_SECRET)
+
+    config["providers"][1]["options"]["clientID"] = str(COIH_CLIENT_ID)
+    config["providers"][1]["options"]["clientSecret"] = str(COIH_CLIENT_SECRET)
 
     with open(json_file, 'w') as j:
         json.dump(config, j)
