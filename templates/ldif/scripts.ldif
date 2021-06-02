@@ -604,7 +604,7 @@ inum: 4D35.5AE9
 description: Policy that connects with PDP to check resource access
 oxScriptType: uma_rpt_policy
 oxRevision: 10
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_policy
