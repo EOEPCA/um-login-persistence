@@ -275,12 +275,14 @@ def get_base_ctx(manager):
         "passport_rs_client_id": manager.config.get("passport_rs_client_id"),
         "passport_resource_id": manager.config.get("passport_resource_id"),
         "hostname": manager.config.get("hostname"),
+        "pdp_ep": manager.config.get("pdp_ep"),
         "passport_rs_client_jks_fn": manager.config.get("passport_rs_client_jks_fn"),
         "passport_rs_client_jks_pass_encoded": manager.secret.get("passport_rs_client_jks_pass_encoded"),
         "passport_rs_client_cert_alias": manager.config.get("passport_rs_client_cert_alias"),
     }
 
     redis_pw = manager.secret.get("redis_pw") or ""
+    pdp_ep = manager.secret.get("pdp_ep") or ""
     redis_pw_encoded = ""
 
     if redis_pw:
@@ -293,6 +295,7 @@ def get_base_ctx(manager):
         'cache_provider_type': GLUU_CACHE_TYPE,
         'redis_url': GLUU_REDIS_URL,
         'redis_type': GLUU_REDIS_TYPE,
+        'pdp_ep': pdp_ep,
         'redis_pw': redis_pw,
         'redis_pw_encoded': redis_pw_encoded,
         "redis_use_ssl": "{}".format(as_boolean(GLUU_REDIS_USE_SSL)).lower(),

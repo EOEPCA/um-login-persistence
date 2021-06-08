@@ -608,8 +608,8 @@ inum: 4D35.5AE9
 description: Policy that connects with PDP to check resource access
 oxScriptType: uma_rpt_policy
 oxRevision: 10
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_policy
 
@@ -625,8 +625,8 @@ inum: 7307.FD65
 description: Policy that connects with PDP to check resource access and adds a view type for the action
 oxScriptType: uma_rpt_policy
 oxRevision: 10
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_read_policy
 
@@ -642,8 +642,8 @@ inum: EF11.EFEA
 description: Policy that connects with PDP to check resource access and adds a edit type for the action
 oxScriptType: uma_rpt_policy
 oxRevision: 10
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_write_policy
 
@@ -660,8 +660,8 @@ description: Policy that connects to PDP for action ids of "get"
 oxScriptType: uma_rpt_policy
 oxRevision: 3
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"get","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_get_policy
 
@@ -677,8 +677,8 @@ inum: 840B.0AC2
 description: Policy that connects to PDP for action ids of "put"
 oxScriptType: uma_rpt_policy
 oxRevision: 1
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"put","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_put_policy
@@ -696,8 +696,8 @@ description: Policy that connects to PDP for action ids of "post"
 oxScriptType: uma_rpt_policy
 oxRevision: 4
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"post","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_post_policy
 
@@ -714,8 +714,8 @@ description: Policy that connects to PDP for action ids of "delete"
 oxScriptType: uma_rpt_policy
 oxRevision: 3
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"delete","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_delete_policy
 
@@ -732,8 +732,8 @@ description: Policy that connects to PDP for action ids of "head"
 oxScriptType: uma_rpt_policy
 oxRevision: 2
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"head","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_head_policy
 
@@ -750,7 +750,7 @@ description: Policy that connects to PDP for action ids of "patch"
 oxScriptType: uma_rpt_policy
 oxRevision: 1
 oxConfigurationProperty: {"value1":"policy_action_id","value2":"patch","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"/policy/validate","hide":false,"description":""}
-oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s:31708","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_endpoint","value2":"%(pdp_ep)s/policy/validate","hide":false,"description":""}
+oxConfigurationProperty: {"value1":"pdp_hostname","value2":"%(hostname)s","hide":false,"description":""}
 oxLevel: 100
 displayName: scim_protected_patch_policy
