@@ -1318,7 +1318,7 @@ objectClass: gluuAttribute
 gluuAttributeOrigin: gluuCustomPerson
 inum: e73310fa-c8a1-4761-817a-6bbc12cb0984
 oxMultivaluedAttribute: false
-oxSCIMCustomAttribute: false
+oxSCIMCustomAttribute: true
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
 displayName: Is Operator
 oxAuthClaimName: isOperator

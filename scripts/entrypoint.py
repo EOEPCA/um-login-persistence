@@ -32,7 +32,7 @@ GLUU_REDIS_TYPE = os.environ.get('GLUU_REDIS_TYPE', 'STANDALONE')
 GLUU_REDIS_USE_SSL = os.environ.get("GLUU_REDIS_USE_SSL", False)
 GLUU_REDIS_SSL_TRUSTSTORE = os.environ.get("GLUU_REDIS_SSL_TRUSTSTORE", "")
 GLUU_REDIS_SENTINEL_GROUP = os.environ.get("GLUU_REDIS_SENTINEL_GROUP", "")
-
+PDP_EP = os.environ.get("PDP_EP", "/pdp")
 GLUU_MEMCACHED_URL = os.environ.get('GLUU_MEMCACHED_URL', 'localhost:11211')
 
 GLUU_OXTRUST_CONFIG_GENERATION = os.environ.get("GLUU_OXTRUST_CONFIG_GENERATION", True)
@@ -282,7 +282,6 @@ def get_base_ctx(manager):
     }
 
     redis_pw = manager.secret.get("redis_pw") or ""
-    pdp_ep = manager.secret.get("pdp_ep") or ""
     redis_pw_encoded = ""
 
     if redis_pw:
@@ -295,7 +294,7 @@ def get_base_ctx(manager):
         'cache_provider_type': GLUU_CACHE_TYPE,
         'redis_url': GLUU_REDIS_URL,
         'redis_type': GLUU_REDIS_TYPE,
-        'pdp_ep': pdp_ep,
+        'pdp_ep': PDP_EP,
         'redis_pw': redis_pw,
         'redis_pw_encoded': redis_pw_encoded,
         "redis_use_ssl": "{}".format(as_boolean(GLUU_REDIS_USE_SSL)).lower(),
