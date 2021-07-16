@@ -88,7 +88,7 @@ class UmaRptPolicy(UmaRptPolicyType):
         request.update({"AccessSubject": access_subject_list})
 
         #Add Action for the intended scope
-        attribute_action_view = {"AttributeId": "action-id", "Value": str(configurationAttributes.get("policy_action_id").getValue2())}
+        attribute_action_view = {"AttributeId": "action-id", "Value": self.policy_action_id}
         action_attribute_list = [attribute_action_view]
         attribute_action = {"Attribute": action_attribute_list}
         action_list = [attribute_action]
