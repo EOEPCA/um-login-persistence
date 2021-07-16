@@ -32,7 +32,7 @@ GLUU_REDIS_TYPE = os.environ.get('GLUU_REDIS_TYPE', 'STANDALONE')
 GLUU_REDIS_USE_SSL = os.environ.get("GLUU_REDIS_USE_SSL", False)
 GLUU_REDIS_SSL_TRUSTSTORE = os.environ.get("GLUU_REDIS_SSL_TRUSTSTORE", "")
 GLUU_REDIS_SENTINEL_GROUP = os.environ.get("GLUU_REDIS_SENTINEL_GROUP", "")
-
+PDP_EP = os.environ.get("PDP_EP", "/pdp")
 GLUU_MEMCACHED_URL = os.environ.get('GLUU_MEMCACHED_URL', 'localhost:11211')
 
 GLUU_OXTRUST_CONFIG_GENERATION = os.environ.get("GLUU_OXTRUST_CONFIG_GENERATION", True)
@@ -52,6 +52,9 @@ GLUU_SCIM_TEST_MODE = os.environ.get("GLUU_SCIM_TEST_MODE", False)
 
 LP_CLIENT_ID = os.environ.get("LP_CLIENT_ID", "")
 LP_CLIENT_SECRET = os.environ.get("LP_CLIENT_SECRET", "")
+
+COIH_CLIENT_ID = os.environ.get("COIH_CLIENT_ID", "")
+COIH_CLIENT_SECRET = os.environ.get("COIH_CLIENT_SECRET", "")
 
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("entrypoint")
@@ -272,6 +275,7 @@ def get_base_ctx(manager):
         "passport_rs_client_id": manager.config.get("passport_rs_client_id"),
         "passport_resource_id": manager.config.get("passport_resource_id"),
         "hostname": manager.config.get("hostname"),
+        "pdp_ep": manager.config.get("pdp_ep"),
         "passport_rs_client_jks_fn": manager.config.get("passport_rs_client_jks_fn"),
         "passport_rs_client_jks_pass_encoded": manager.secret.get("passport_rs_client_jks_pass_encoded"),
         "passport_rs_client_cert_alias": manager.config.get("passport_rs_client_cert_alias"),
@@ -290,6 +294,7 @@ def get_base_ctx(manager):
         'cache_provider_type': GLUU_CACHE_TYPE,
         'redis_url': GLUU_REDIS_URL,
         'redis_type': GLUU_REDIS_TYPE,
+        'pdp_ep': PDP_EP,
         'redis_pw': redis_pw,
         'redis_pw_encoded': redis_pw_encoded,
         "redis_use_ssl": "{}".format(as_boolean(GLUU_REDIS_USE_SSL)).lower(),
@@ -498,6 +503,9 @@ def update_credentials_account():
     
     config["providers"][0]["options"]["clientID"] = str(LP_CLIENT_ID)
     config["providers"][0]["options"]["clientSecret"] = str(LP_CLIENT_SECRET)
+
+    config["providers"][1]["options"]["clientID"] = str(COIH_CLIENT_ID)
+    config["providers"][1]["options"]["clientSecret"] = str(COIH_CLIENT_SECRET)
 
     with open(json_file, 'w') as j:
         json.dump(config, j)

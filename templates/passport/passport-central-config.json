@@ -44,7 +44,26 @@
             "clientSecret": ""
           },
           "logo_img": "img/github.png"
+        },
+        {
+            "id":"coih",
+            "displayName":"COIH",
+            "type":"openidconnect",
+            "mapping":"openidconnect-default",
+            "passportStrategyId":"passport-openidconnect",
+            "enabled":true,
+            "callbackUrl":"https://%(hostname)s/passport/auth/coih/callback",
+            "requestForEmail":false,
+            "emailLinkingSafe":true,
+            "options":{
+                "clientID":"",
+                "clientSecret":"",
+                "authorizationURL": "https://aai.coih.org/oxauth/restv1/authorize",
+                "issuer": "https://aai.coih.org",
+                "tokenURL": "https://aai.coih.org/oxauth/restv1/token",
+                "userInfoURL": "https://aai.coih.org/oxauth/restv1/userinfo"
+            },
+            "logo_img":"img/coih.png"
         }
-      ]
-
+    ]
 }

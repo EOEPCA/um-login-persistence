@@ -1318,7 +1318,7 @@ objectClass: gluuAttribute
 gluuAttributeOrigin: gluuCustomPerson
 inum: e73310fa-c8a1-4761-817a-6bbc12cb0984
 oxMultivaluedAttribute: false
-oxSCIMCustomAttribute: false
+oxSCIMCustomAttribute: true
 oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
 displayName: Is Operator
 oxAuthClaimName: isOperator
@@ -1331,6 +1331,26 @@ gluuAttributeEditType: admin
 gluuAttributeViewType: admin
 gluuAttributeViewType: user
 description: Is this user an Operator?
+
+#StorageDetails defines a list of Object Storage bucket URI 
+dn: inum=649ff8aa-55aa-4366-a492-2a500a942fe2,ou=attributes,o=gluu
+objectClass: top
+objectClass: gluuAttribute
+gluuAttributeOrigin: gluuCustomPerson
+inum: 649ff8aa-55aa-4366-a492-2a500a942fe2
+oxMultivaluedAttribute: true
+oxSCIMCustomAttribute: true
+oxValidation: {"minLength":null,"maxLength":null,"regexp":""}
+oxAuthClaimName: StorageDetails
+displayName: StorageDetails
+gluuAttributeType: string
+gluuStatus: active
+gluuSAML2URI: urn:oid:StorageDetails
+gluuSAML1URI: urn:gluu:dir:attribute-def:StorageDetails
+gluuAttributeName: StorageDetails
+gluuAttributeEditType: admin
+gluuAttributeViewType: admin
+description: List of Object Storage bucket URI
 
 # List of API Keys for all users, text value, JSON format
 dn: inum=c3fb230d-2057-45de-8be1-0fbee3fe7e97,ou=attributes,o=gluu
