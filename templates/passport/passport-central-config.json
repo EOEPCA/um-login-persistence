@@ -63,7 +63,7 @@
                 "tokenURL": "https://aai.coih.org/oxauth/restv1/token",
                 "userInfoURL": "https://aai.coih.org/oxauth/restv1/userinfo"
             },
-            "logo_img":"img/coih.png"
+            "logo_img":"../../ext/resources/img/passport/coih.png"
         }
     ]
 }
