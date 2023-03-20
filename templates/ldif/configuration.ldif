@@ -74,6 +74,7 @@ oxAuthConfDynamic::%(oxauth_config_base64)s
 oxAuthConfStatic::%(oxauth_static_conf_base64)s
 oxAuthConfWebKeys::%(oxauth_openid_key_base64)s
 oxAuthConfErrors::%(oxauth_error_base64)s
+umaResourceLifetime::%(uma_resource_lifetime)s
 oxRevision: 1
 
 dn: ou=oxtrust,ou=configuration,o=gluu

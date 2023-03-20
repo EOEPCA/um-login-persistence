@@ -448,12 +448,16 @@ def merge_oxauth_ctx(ctx):
         'oxauth_config_base64': 'oxauth-config.json',
         'oxauth_static_conf_base64': 'oxauth-static-conf.json',
         'oxauth_error_base64': 'oxauth-errors.json',
+        'uma_resource_lifetime': 'oxauth-config.json',
     }
 
     for key, file_ in file_mappings.iteritems():
         file_path = os.path.join(basedir, file_)
         with open(file_path) as fp:
-            ctx[key] = generate_base64_contents(fp.read() % ctx)
+            if 'base64' in key:
+                ctx[key] = generate_base64_contents(fp.read() % ctx)
+            else:
+                ctx[key] = fp.read() % ctx
     return ctx
 
 
