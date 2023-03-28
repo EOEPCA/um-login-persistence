@@ -445,19 +445,23 @@ def merge_oxtrust_ctx(ctx):
 def merge_oxauth_ctx(ctx):
     basedir = '/app/templates/oxauth'
     file_mappings = {
-        'oxauth_config_base64': 'oxauth-config.json',
-        'oxauth_static_conf_base64': 'oxauth-static-conf.json',
-        'oxauth_error_base64': 'oxauth-errors.json',
-        'uma_resource_lifetime': 'oxauth-config.json',
+        'oxauth-config.json': ['oxauth_config_base64', 'uma_resource_lifetime'],
+        'oxauth-static-conf.json': ['oxauth_static_conf_base64'],
+        'oxauth-errors.json': ['oxauth_error_base64']
     }
 
-    for key, file_ in file_mappings.iteritems():
+    for file_, configs in file_mappings.iteritems():
         file_path = os.path.join(basedir, file_)
         with open(file_path) as fp:
-            if 'base64' in key:
-                ctx[key] = generate_base64_contents(fp.read() % ctx)
-            else:
-                ctx[key] = fp.read() % ctx
+            for config in configs:
+                if 'base64' in config:
+                    ctx[config] = generate_base64_contents(fp.read() % ctx)
+                else:
+                    if config == 'uma_resource_lifetime' and os.environ.get("UMA_RESOURCE_LIFETIME", None):
+                        ctx[config] = os.environ.get("UMA_RESOURCE_LIFETIME", None)
+                    else:
+                        ctx[config] = fp.read() % ctx
+                        
     return ctx
 
 
