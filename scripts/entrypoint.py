@@ -33,6 +33,7 @@ GLUU_REDIS_USE_SSL = os.environ.get("GLUU_REDIS_USE_SSL", False)
 GLUU_REDIS_SSL_TRUSTSTORE = os.environ.get("GLUU_REDIS_SSL_TRUSTSTORE", "")
 GLUU_REDIS_SENTINEL_GROUP = os.environ.get("GLUU_REDIS_SENTINEL_GROUP", "")
 PDP_EP = os.environ.get("PDP_EP", "/pdp")
+UMA_RESOURCE_LIFETIME = os.environ.get("UMA_RESOURCE_LIFETIME", 21474836)
 GLUU_MEMCACHED_URL = os.environ.get('GLUU_MEMCACHED_URL', 'localhost:11211')
 
 GLUU_OXTRUST_CONFIG_GENERATION = os.environ.get("GLUU_OXTRUST_CONFIG_GENERATION", True)
@@ -275,6 +276,7 @@ def get_base_ctx(manager):
         "passport_rs_client_id": manager.config.get("passport_rs_client_id"),
         "passport_resource_id": manager.config.get("passport_resource_id"),
         "hostname": manager.config.get("hostname"),
+        "uma_resource_lifetime": manager.config.get("uma_resource_lifetime"),
         "pdp_ep": manager.config.get("pdp_ep"),
         "passport_rs_client_jks_fn": manager.config.get("passport_rs_client_jks_fn"),
         "passport_rs_client_jks_pass_encoded": manager.secret.get("passport_rs_client_jks_pass_encoded"),
@@ -295,6 +297,7 @@ def get_base_ctx(manager):
         'redis_url': GLUU_REDIS_URL,
         'redis_type': GLUU_REDIS_TYPE,
         'pdp_ep': PDP_EP,
+        'uma_resource_lifetime': UMA_RESOURCE_LIFETIME,
         'redis_pw': redis_pw,
         'redis_pw_encoded': redis_pw_encoded,
         "redis_use_ssl": "{}".format(as_boolean(GLUU_REDIS_USE_SSL)).lower(),
@@ -445,7 +448,7 @@ def merge_oxtrust_ctx(ctx):
 def merge_oxauth_ctx(ctx):
     basedir = '/app/templates/oxauth'
     file_mappings = {
-        'oxauth-config.json': ['oxauth_config_base64', 'uma_resource_lifetime'],
+        'oxauth-config.json': ['oxauth_config_base64'],
         'oxauth-static-conf.json': ['oxauth_static_conf_base64'],
         'oxauth-errors.json': ['oxauth_error_base64']
     }
@@ -454,14 +457,7 @@ def merge_oxauth_ctx(ctx):
         file_path = os.path.join(basedir, file_)
         with open(file_path) as fp:
             for config in configs:
-                if 'base64' in config:
-                    ctx[config] = generate_base64_contents(fp.read() % ctx)
-                else:
-                    if config == 'uma_resource_lifetime' and os.environ.get("UMA_RESOURCE_LIFETIME", None):
-                        ctx[config] = os.environ.get("UMA_RESOURCE_LIFETIME", None)
-                    else:
-                        ctx[config] = fp.read() % ctx
-                        
+                ctx[config] = generate_base64_contents(fp.read() % ctx)                        
     return ctx
 
 
@@ -823,7 +819,6 @@ class LDAPBackend(object):
                 src = "/app/templates/ldif/{}".format(file_)
                 dst = "/app/tmp/{}".format(file_)
                 render_ldif(src, dst, ctx)
-
                 parser = LDIFParser(open(dst))
                 for dn, entry in parser.parse():
                     self.add_entry(dn, entry)
